@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -39,19 +38,22 @@ public class HomeFragment extends Fragment {
         homeViewModel.getUserName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                user_name.setText(s);
+                if (s!="")
+                   user_name.setText(s);
             }
         });
-        homeViewModel.getUserSurame().observe(getViewLifecycleOwner(), new Observer<String>() {
+        homeViewModel.getUserSurname().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                user_surname.setText(s);
+                if (s!="")
+                    user_surname.setText(s);
             }
         })
         ;homeViewModel.getUserBio().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                user_bio.setText(s);
+                if (s!="")
+                    user_bio.setText(s);
             }
         });
 

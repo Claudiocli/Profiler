@@ -21,14 +21,14 @@ public class HomeViewModel extends AndroidViewModel {
         user_surname = new MutableLiveData<>();
         user_bio = new MutableLiveData<>();
 
-        user_name.setValue(getApplication().getString(R.string.user_name));
-        user_surname.setValue(getApplication().getString(R.string.user_surname));
-        user_bio.setValue(getApplication().getString(R.string.user_bio));
+        user_name.setValue((getApplication().getString(R.string.name_placeholder)));
+        user_surname.setValue((getApplication().getString(R.string.surname_placeholder)));
+        user_bio.setValue((getApplication().getString(R.string.bio_placeholder)));
 
     }
 
     public LiveData<String> getUserName()   {return user_name;}
-    public LiveData<String> getUserSurame()   {return user_surname;}
+    public LiveData<String> getUserSurname()   {return user_surname;}
     public LiveData<String> getUserBio()   {return user_bio;}
 
     public LiveData<String>[] getUserInfo() {
