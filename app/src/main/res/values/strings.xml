@@ -3,4 +3,22 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="name_placeholder">Name</string>
+    <string name="surname_placeholder">Surname</string>
+    <string name="profile_picture_description">Profile Picture</string>
+    <string name="bio_placeholder">Bio</string>
+
+    <string name="user_name"></string>
+    <string name="user_surname"></string>
+    <string name="user_bio"></string>
+
+    <string name="linkedin_name">Linkedin</string>
+    <string name="google_name"><![CDATA[<font color=#4285F4>G</font><font color=#DB4437>o</font><font color=#F4B400>o</font><font color=#4285F4>g</font><font color=#0F9D58>l</font><font color=#DB4437>e</font>]]></string>
+    <string name="facebook_name">Facebook</string>
+    <string name="personal_website_name">Website</string>
+    <string name="whatsapp_name">WhatsApp</string>
+    <string name="telegram_name">Telegram</string>
+    <string name="profile_picture">Profile Picture</string>
+
 </resources>
