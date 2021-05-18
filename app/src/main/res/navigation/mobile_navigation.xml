@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.ccmu.profiler.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.ccmu.profiler.ui.organization.OrganizationFragment"
+        android:label="@string/title_organization"
+        tools:layout="@layout/fragment_organization" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.ccmu.profiler.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.ccmu.profiler.ui.contacts.ContactsFragment"
+        android:label="@string/title_contacts"
+        tools:layout="@layout/fragment_contacts" />
 </navigation>

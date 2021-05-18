@@ -1,16 +1,16 @@
-package com.ccmu.profiler.ui.notifications;
+package com.ccmu.profiler.ui.organization;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class OrganizationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public OrganizationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is organization fragment");
     }
 
     public LiveData<String> getText() {
