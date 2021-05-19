@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MotionEventCompat;
 
 import com.ccmu.profiler.R;
 
@@ -50,12 +52,15 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
 
         contactName.append(": "+contact.getName());
         String[] numbers=contact.getNumbers();
-        contactNumber.append(": ");
-        if (numbers.length > 1)
-            for (String s : numbers)
-                contactNumber.append(s+" - ");
-        else
-            contactNumber.append(numbers[0]);
+        contactNumber.append(": "+numbers[0]);
+//  No utility - To be reconsidered
+//        if (numbers.length > 1)
+//            for (String s : numbers)
+//                contactNumber.append(s+" \n");
+//        else if (numbers.length == 1)
+//            contactNumber.append(numbers[0]);
+
+
 
         return convertView;
     }

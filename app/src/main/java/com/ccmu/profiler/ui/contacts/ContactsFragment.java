@@ -51,7 +51,13 @@ public class ContactsFragment extends Fragment    {
 
     private void doShowContacts() {
         ContentResolver cr = requireContext().getContentResolver();
-        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER},
+                null,
+                null,
+                null);
 
         ArrayList<Contact> contacts = new ArrayList<>();
         ContactAdapter contactsAdapter= new ContactAdapter(requireContext(), contacts);
@@ -60,22 +66,23 @@ public class ContactsFragment extends Fragment    {
 
         if ((cursor != null ? cursor.getCount() : 0) > 0) {
             while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cursor.getString(cursor.getColumnIndex((ContactsContract.Contacts.DISPLAY_NAME)));
-                ArrayList<String> number = new ArrayList<>();
-                if (cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER) > 0)  {
-                    Cursor cur = requireContext().getContentResolver().query(
+                String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                String name = cursor.getString(cursor.getColumnIndex((ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+                ArrayList<String> numberArray = new ArrayList<>();
+                if (cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER) > 0)  {
+                    Cursor cursor1 = requireContext().getContentResolver().query(
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                         null,
-                        ContactsContract.CommonDataKinds.Phone._ID+" = ?",
-                        new String[]{id},
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID+" = ?",
+                        new String[]{contactId},
                         null);
-                    while (cur.moveToNext())
-                        number.add(cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    if (cur != null)
-                        cur.close();
+                    if (cursor1 != null)
+                        while (cursor1.moveToNext())
+                            numberArray.add(cursor1.getString(cursor1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                    if (cursor1 != null)
+                        cursor1.close();
                 }
-                contactsAdapter.add(new Contact(id, name, number.toArray(new String[0])));
+                contactsAdapter.add(new Contact(contactId, name, numberArray.toArray(new String[0])));
             }
         }
 
@@ -106,4 +113,5 @@ public class ContactsFragment extends Fragment    {
             }
         }
     }
+
 }

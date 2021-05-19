@@ -8,7 +8,8 @@
     <LinearLayout
         android:id="@+id/contact_info_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:weightSum="4"
         android:background="@color/button_background">
 
@@ -17,27 +18,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            android:weightSum="2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/contactName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="@string/name_placeholder"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                android:textSize="@dimen/info_contact_size" />
 
             <TextView
                 android:id="@+id/contactNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="@string/number_placeholder"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                android:textSize="@dimen/info_contact_size" />
 
         </LinearLayout>
 

@@ -12,6 +12,7 @@ public class Contact {
         this.numbers=numbers;
     }
     public Contact()    {
+        numbers=new String[1];
         id=name=numbers[0]="";
     }
 
