@@ -10,57 +10,54 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.ccmu.profiler.R;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel homeViewModel = new ViewModelProvider(getViewModelStore(), getDefaultViewModelProviderFactory()).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        final TextView textView = root.findViewById(R.id.text_home);
-//        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
 
-        final TextView user_name=(TextView) root.findViewById(R.id.name);
-        final TextView user_surname=(TextView) root.findViewById(R.id.surname);
-        final TextView user_bio=(TextView) root.findViewById(R.id.bio);
+        addObserverForChanges(homeViewModel, root);
+
+
+        TextView googleLinkTextView = root.findViewById(R.id.googlePersonalLink);
+        googleLinkTextView.setText(Html.fromHtml(getString(R.string.google_name), Html.FROM_HTML_MODE_LEGACY));
+
+        return root;
+    }
+
+    private void addObserverForChanges(HomeViewModel homeViewModel, View root) {
+
+        final TextView user_name = root.findViewById(R.id.name);
+        final TextView user_surname = root.findViewById(R.id.surname);
+        final TextView user_bio = root.findViewById(R.id.bio);
 
         homeViewModel.getUserName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s!="")
-                   user_name.setText(s);
+                if (!s.equals(""))
+                    user_name.setText(s);
             }
         });
         homeViewModel.getUserSurname().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s!="")
+                if (!s.equals(""))
                     user_surname.setText(s);
             }
         })
-        ;homeViewModel.getUserBio().observe(getViewLifecycleOwner(), new Observer<String>() {
+        ;
+        homeViewModel.getUserBio().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s!="")
+                if (!s.equals(""))
                     user_bio.setText(s);
             }
         });
-
-
-        TextView googleLinkTextView=(TextView) root.findViewById(R.id.googlePersonalLink);
-        googleLinkTextView.setText(Html.fromHtml(getString(R.string.google_name), Html.FROM_HTML_MODE_LEGACY));
-
-        return root;
     }
+
 }

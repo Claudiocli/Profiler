@@ -22,8 +22,11 @@
     <string name="telegram_name">Telegram</string>
     <string name="profile_picture">Profile Picture</string>
 
+    <string name="send_contact_button">Send Contact</string>
+    <string name="receive_contact_button">Receive Contact</string>
+
     <string name="title_alert_no_permission">No permission granted</string>
-    <string name="message_alert_no_permission">The app need to access your contacts to ensure a fully experience</string>
+    <string name="message_alert_no_permission">The app need to access your contactModels to ensure a fully experience</string>
 
     <string name="title_alert_permission_error">Error</string>
 

@@ -18,7 +18,7 @@ import com.ccmu.profiler.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ContactAdapter extends ArrayAdapter<Contact> {
+public class ContactAdapter extends ArrayAdapter<ContactModel> {
 
     /**
      * Constructor
@@ -26,14 +26,14 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
      * @param context  The current context.
      * @param resource The resource ID for a layout file containing a TextView to use when
      */
-    public ContactAdapter(@NonNull Context context, ArrayList<Contact> resource) {
+    public ContactAdapter(@NonNull Context context, ArrayList<ContactModel> resource) {
         super(context, 0, resource);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Contact contact = Objects.requireNonNull(getItem(position));
+        ContactModel contactModel = Objects.requireNonNull(getItem(position));
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_contact, parent, false);
@@ -48,8 +48,8 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         TextView contactName = convertView.findViewById(R.id.contactName);
         TextView contactNumber = convertView.findViewById(R.id.contactNumber);
 
-        contactName.setText("Name: " + contact.getName());
-        String[] numbers = contact.getNumbers();
+        contactName.setText("Name: " + contactModel.getName());
+        String[] numbers = contactModel.getNumbers();
         contactNumber.setText("Number: " + numbers[0]);
 
 //  No utility - To be reconsidered

@@ -1,19 +1,20 @@
 package com.ccmu.profiler.ui.contacts;
 
-public class Contact {
+public class ContactModel {
 
     private String id;
     private String name;
     private String[] numbers;
 
-    public Contact(String id, String name, String[] numbers)    {
-        this.id=id;
-        this.name=name;
-        this.numbers=numbers;
+    public ContactModel(String id, String name, String[] numbers) {
+        this.id = id;
+        this.name = name;
+        this.numbers = numbers;
     }
-    public Contact()    {
-        numbers=new String[1];
-        id=name=numbers[0]="";
+
+    public ContactModel() {
+        numbers = new String[1];
+        id = name = numbers[0] = "";
     }
 
     public String getId() { return id; }

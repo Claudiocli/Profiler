@@ -71,8 +71,8 @@ public class ContactsFragment extends Fragment    {
                 null,
                 null);
 
-        ArrayList<Contact> contacts = new ArrayList<>();
-        ContactAdapter contactsAdapter= new ContactAdapter(requireContext(), contacts);
+        ArrayList<ContactModel> contactModels = new ArrayList<>();
+        ContactAdapter contactsAdapter = new ContactAdapter(requireContext(), contactModels);
 
         contactsList.setAdapter(contactsAdapter);
 
@@ -81,7 +81,7 @@ public class ContactsFragment extends Fragment    {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
                 String name = cursor.getString(cursor.getColumnIndex((ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
                 ArrayList<String> numberArray = new ArrayList<>();
-                if (cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER) > 0)  {
+                if (cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER) > 0) {
                     Cursor cursor1 = requireContext().getContentResolver().query(
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                         null,
@@ -94,7 +94,7 @@ public class ContactsFragment extends Fragment    {
                     if (cursor1 != null)
                         cursor1.close();
                 }
-                contactsAdapter.add(new Contact(contactId, name, numberArray.toArray(new String[0])));
+                contactsAdapter.add(new ContactModel(contactId, name, numberArray.toArray(new String[0])));
             }
         }
 

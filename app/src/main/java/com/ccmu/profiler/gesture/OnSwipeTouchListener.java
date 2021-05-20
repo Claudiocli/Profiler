@@ -11,7 +11,7 @@ import android.widget.ListView;
 import androidx.core.view.GestureDetectorCompat;
 
 import com.ccmu.profiler.BuildConfig;
-import com.ccmu.profiler.ui.contacts.Contact;
+import com.ccmu.profiler.ui.contacts.ContactModel;
 
 import java.util.regex.Pattern;
 
@@ -49,9 +49,9 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                     }
                 }
 
-                Contact contact = (Contact) l.getItemAtPosition(l.getPositionForView(touched));
+                ContactModel contactModel = (ContactModel) l.getItemAtPosition(l.getPositionForView(touched));
 
-                CharSequence number = contact.getNumbers()[0];
+                CharSequence number = contactModel.getNumbers()[0];
 
                 // Removing "Number: "
                 CharSequence dialNumber = number.subSequence(number.toString().indexOf(":") + 2, number.length());
