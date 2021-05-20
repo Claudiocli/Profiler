@@ -12,14 +12,15 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_organization"
         android:name="com.ccmu.profiler.ui.organization.OrganizationFragment"
         android:label="@string/title_organization"
         tools:layout="@layout/fragment_organization" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_contacts"
         android:name="com.ccmu.profiler.ui.contacts.ContactsFragment"
         android:label="@string/title_contacts"
         tools:layout="@layout/fragment_contacts" />
+
 </navigation>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ccmu.profiler.R;
+import com.ccmu.profiler.gesture.OnSwipeTouchListener;
 import com.ccmu.profiler.ui.home.HomeFragment;
 
 import java.util.ArrayList;
@@ -39,22 +41,32 @@ public class ContactsFragment extends Fragment    {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
 
-        contactsList = (ListView) root.findViewById(R.id.contactsList);
+        contactsList = root.findViewById(R.id.contactsList);
 
         if (requireContext().checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
             requireActivity().requestPermissions(new String[]{READ_CONTACTS}, REQUEST_CODE_CONTACTS_READ);
         else
             doShowContacts();
 
+        contactsList.setOnTouchListener(new OnSwipeTouchListener(contactsList));
+        contactsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: Inflate a View to display contact's info
+            }
+        });
+
         return root;
     }
 
     private void doShowContacts() {
+        if (contactsList.getAdapter() != null)
+            ((ContactAdapter) contactsList.getAdapter()).clear();
         ContentResolver cr = requireContext().getContentResolver();
         Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER},
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER},
                 null,
                 null,
                 null);

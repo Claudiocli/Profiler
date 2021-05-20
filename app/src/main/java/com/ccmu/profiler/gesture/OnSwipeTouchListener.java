@@ -1,49 +1,80 @@
 package com.ccmu.profiler.gesture;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
-import android.view.GestureDetector;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ListView;
+
+import androidx.core.view.GestureDetectorCompat;
 
 import com.ccmu.profiler.BuildConfig;
-import com.ccmu.profiler.R;
+import com.ccmu.profiler.ui.contacts.Contact;
 
 import java.util.regex.Pattern;
 
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
-        private final GestureDetector gestureDetector;
-        private View view;
+    private final GestureDetectorCompat gestureDetector;
 
-        public OnSwipeTouchListener(final View view)    {
-            this.view = view;
-            gestureDetector = new GestureDetector(view.getContext(), new GestureListener(view)    {
+    public OnSwipeTouchListener(final View view) {
+        gestureDetector = new GestureDetectorCompat(view.getContext(), new GestureListener(view) {
 
-                @Override
-                public void onSwipeRight() {}
+            @Override
+            public void onSwipeRight(MotionEvent start) {
+            }
 
-                @Override
-                public void onSwipeLeft() {
-                    CharSequence number = ((TextView) getView().findViewById(R.id.contactNumber)).getText();
-                    // Removing "Number: "
-                    CharSequence dialNumber = number.subSequence(number.toString().indexOf(":") + 1, number.length());
-                    // Debugging assertion to ensure a valid number to be parsed
-                    if (BuildConfig.DEBUG && !(((Pattern.compile("/\\(*\\+*\\d+\\)* \\d+ \\d+ *\\d*")).matcher(number)).matches())) {
-                        throw new AssertionError("Assertion failed");
+            @Override
+            public void onSwipeLeft(MotionEvent start) {
+                Log.d("GestureDetection", "Swipe Left detected");
+
+                ListView l = (ListView) view;
+
+                int childCount = l.getChildCount();
+                View child, touched = null;
+                int[] listViewCoords = new int[2];
+                l.getLocationOnScreen(listViewCoords);
+                int x = (int) start.getRawX() - listViewCoords[0];
+                int y = (int) start.getRawY() - listViewCoords[1];
+
+                for (int i = 0; i < childCount; i++) {
+                    child = l.getChildAt(i);
+                    Rect r = new Rect();
+                    child.getHitRect(r);
+                    if (r.contains(x, y)) {
+                        touched = child;
+                        break;
                     }
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + dialNumber));
-                    view.getContext().startActivity(intent);
                 }
 
-                @Override
-                public void onSwipeUp() {}
+                Contact contact = (Contact) l.getItemAtPosition(l.getPositionForView(touched));
 
-                @Override
-                public void onSwipeDown() {}
-            });
+                CharSequence number = contact.getNumbers()[0];
+
+                // Removing "Number: "
+                CharSequence dialNumber = number.subSequence(number.toString().indexOf(":") + 2, number.length());
+
+                // Debugging assertion to ensure a valid number to be parsed
+                if (BuildConfig.DEBUG && !(((Pattern.compile(" *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*")).matcher(dialNumber)).matches())) {
+                    Log.d("OnSwipeTouchListener DEBUG", dialNumber.toString());
+                    Log.d("OnSwipeTouchListener DEBUG - REGEX", "Regex result is: " + (((Pattern.compile(" *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*")).matcher(dialNumber)).matches()));
+                    throw new AssertionError("Assertion failed");
+                }
+
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + dialNumber));
+                view.getContext().startActivity(intent);
+            }
+
+            @Override
+            public void onSwipeUp(MotionEvent start) {
+            }
+
+            @Override
+            public void onSwipeDown(MotionEvent start) {
+            }
+        });
         }
 
     /**
