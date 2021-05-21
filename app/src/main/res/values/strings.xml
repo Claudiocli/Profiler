@@ -28,6 +28,12 @@
     <string name="title_alert_no_permission">No permission granted</string>
     <string name="message_alert_no_permission">The app need to access your contactModels to ensure a fully experience</string>
 
+    <string name="title_alert_error_nfc_mode">Error on initialization NFC</string>
+    <string name="message_alert_error_nfc_mode">An error was occurred while initializing a NFC connection</string>
+
+    <string name="nfc_writing_IO_exception">Error during NFC communication. Are the NFC devices close enough?</string>
+    <string name="nfc_writing_format_exception">Format error - Text provided is incorrectly formatted</string>
+
     <string name="title_alert_permission_error">Error</string>
 
     <string name="yes">Yes</string>

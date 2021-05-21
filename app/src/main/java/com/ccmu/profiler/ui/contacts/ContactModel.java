@@ -11,7 +11,6 @@ public class ContactModel {
         this.name = name;
         this.numbers = numbers;
     }
-
     public ContactModel() {
         numbers = new String[1];
         id = name = numbers[0] = "";

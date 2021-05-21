@@ -26,9 +26,13 @@ import java.util.ArrayList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class ContactsFragment extends Fragment    {
+public class ContactsFragment extends Fragment {
 
-    private static final int REQUEST_CODE_CONTACTS_READ=1;
+    private static final int REQUEST_CODE_CONTACTS_READ = 1;
+
+    public static final String CONTACT_NAME_INTENT_ID = "contact_name_intent_id";
+    public static final String CONTACT_SURNAME_INTENT_ID = "contact_surname_intent_id";
+    public static final String CONTACT_NUMBERS_INTENT_ID = "contact_number_intent_id";
 
     private ListView contactsList;
 
