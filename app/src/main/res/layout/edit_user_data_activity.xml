@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="15dp">
+
+        <TextView
+            android:id="@+id/first_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_placeholder"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/last_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/surname_placeholder"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/bio_and_info_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bio_placeholder"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <ImageView
+            android:id="@+id/image_edit"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_profile_pic_placeholder" />
+
+        <TextView
+            android:id="@+id/linkedin_edit_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/linkedin_name"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/google_edit_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Google"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/website_edit_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/personal_website_name"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/whatsapp_edit_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/whatsapp_name"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/telegram_edit_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/telegram_name"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/facebook_link_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/facebook_name"
+            android:textSize="35sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="15dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

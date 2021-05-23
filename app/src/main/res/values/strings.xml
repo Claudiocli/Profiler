@@ -4,15 +4,11 @@
     <string name="title_organization">Organization</string>
     <string name="title_contacts">Contacts</string>
 
-    <string name="name_placeholder">Name</string>
-    <string name="surname_placeholder">Surname</string>
+    <string name="name_placeholder">First name</string>
+    <string name="surname_placeholder">Last name</string>
     <string name="profile_picture_description">Profile Picture</string>
     <string name="bio_placeholder">Bio</string>
     <string name="number_placeholder">Number</string>
-
-    <string name="user_name"></string>
-    <string name="user_surname"></string>
-    <string name="user_bio"></string>
 
     <string name="linkedin_name">Linkedin</string>
     <string name="google_name"><![CDATA[<font color=#4285F4>G</font><font color=#DB4437>o</font><font color=#F4B400>o</font><font color=#4285F4>g</font><font color=#0F9D58>l</font><font color=#DB4437>e</font>]]></string>
@@ -22,8 +18,22 @@
     <string name="telegram_name">Telegram</string>
     <string name="profile_picture">Profile Picture</string>
 
+    <string name="name_format">NAME</string>
+    <string name="surname_format">SURNAME</string>
+    <string name="bio_format">BIO</string>
+    <string name="linkedin_comparison">LINKEDIN</string>
+    <string name="google_comparison">GOOGLE</string>
+    <string name="facebook_comparison">FACEBOOK</string>
+    <string name="whatsapp_comparison">WHATSAPP</string>
+    <string name="telegram_comparison">TELEGRAM</string>
+    <string name="website_comparison">WEBSITE</string>
+
     <string name="send_contact_button">Send Contact</string>
     <string name="receive_contact_button">Receive Contact</string>
+
+    <string name="settings_buttons_title">Settings</string>
+
+    <string name="sort_by">Sort by</string>
 
     <string name="title_alert_no_permission">No permission granted</string>
     <string name="message_alert_no_permission">The app need to access your contactModels to ensure a fully experience</string>
@@ -38,8 +48,11 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
     <string name="cancel">Cancel</string>
+    <string name="register_user_title">Register your data</string>
+    <string name="register_user_message">Please, insert your contact information</string>
+    <string name="edit_profile_button_title">Profile</string>
 </resources>
