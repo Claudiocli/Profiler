@@ -1,5 +1,6 @@
 package com.ccmu.profiler.ui.contacts;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -30,6 +31,7 @@ public class ContactAdapter extends ArrayAdapter<ContactModel> {
         super(context, 0, resource);
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -48,16 +50,9 @@ public class ContactAdapter extends ArrayAdapter<ContactModel> {
         TextView contactName = convertView.findViewById(R.id.contactName);
         TextView contactNumber = convertView.findViewById(R.id.contactNumber);
 
-        contactName.setText("Name: " + contactModel.getName());
+        contactName.setText("Name: " + contactModel.getFullName());
         String[] numbers = contactModel.getNumbers();
         contactNumber.setText("Number: " + numbers[0]);
-
-//  No utility - To be reconsidered
-//        if (numbers.length > 1)
-//            for (String s : numbers)
-//                contactNumber.append(s+" \n");
-//        else if (numbers.length == 1)
-//            contactNumber.append(numbers[0]);
 
         return convertView;
     }
