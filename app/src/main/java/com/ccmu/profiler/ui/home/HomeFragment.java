@@ -1,8 +1,6 @@
 package com.ccmu.profiler.ui.home;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,16 +28,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    public static final String SET_URI_PROFILE_IMAGE_ID = "set_bitmap_id";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel = new ViewModelProvider(getViewModelStore(), getDefaultViewModelProviderFactory()).get(HomeViewModel.class);
+        HomeViewModel homeViewModel = new ViewModelProvider(getViewModelStore(),
+                getDefaultViewModelProviderFactory()).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        addObserverForChanges(homeViewModel, root);
         setNFCExchangeListeners(root);
 
         TextView googleLinkTextView = root.findViewById(R.id.googlePersonalLink);
@@ -83,12 +83,7 @@ public class HomeFragment extends Fragment {
             return;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            ArrayList<String> userData = new ArrayList<>();
-            String currLine = reader.readLine();
-            while (currLine != null) {
-                userData.add(currLine);
-                currLine = reader.readLine();
-            }
+            List<String> userData = Files.readAllLines(file.toPath());
             if (userData.size() == 0)
                 return;
             /*
@@ -120,6 +115,8 @@ public class HomeFragment extends Fragment {
 
                 if (!link.startsWith("http://") && !link.startsWith("https://"))
                     link = "http://" + link;
+                if (!(!link.equals("") && !link.equals("http://")))
+                    continue;
 
                 if (linkTo.equals(root.getResources().getString(R.string.linkedin_comparison))) {
                     String finalLinkedinLink = link;
@@ -152,38 +149,31 @@ public class HomeFragment extends Fragment {
             ((TextView) root.findViewById(R.id.surname)).setText(user_last_name);
             ((TextView) root.findViewById(R.id.bio)).setText(user_bio_and_info);
 
+            Log.d("UPDATE INFO USER", "name edited into " + user_first_name);
+            Log.d("UPDATE INFO USER", "surname edited into " + user_last_name);
+            Log.d("UPDATE INFO USER", "bio edited into " + user_bio_and_info);
+
             File image = new File(requireContext().getFilesDir() + MainActivity.USER_DATA_IMAGE_FILE_NAME);
             if (image.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(image.getPath());
-                ((ImageView) root.findViewById(R.id.profilePic)).setImageBitmap(bitmap);
+                List<String> imageLines = Files.readAllLines(image.toPath());
+                boolean noError = true;
+                if (imageLines.size() == 0)
+                    noError = !image.delete();
+                else if (imageLines.get(0).length() == 0)
+                    noError = !image.delete();
+                else if (noError) {
+                    Uri uri = Uri.parse(imageLines.get(0));
+//                    ((ImageView) root.findViewById(R.id.profile_picture)).setImageURI(uri);
+                }
             }
+
+            reader.close();
 
         } catch (FileNotFoundException e) {
             Log.e("USER_DATA_FILE - FileNotFoundException", e.toString());
         } catch (IOException e) {
             Log.e("USER_DATA_FILE - IOException", e.toString());
         }
-    }
-
-    private void addObserverForChanges(HomeViewModel homeViewModel, View root) {
-
-        final TextView user_name = root.findViewById(R.id.name);
-        final TextView user_surname = root.findViewById(R.id.surname);
-        final TextView user_bio = root.findViewById(R.id.bio);
-
-        homeViewModel.getUserName().observe(getViewLifecycleOwner(), s -> {
-            if (!s.equals(""))
-                user_name.setText(s);
-        });
-        homeViewModel.getUserSurname().observe(getViewLifecycleOwner(), s -> {
-            if (!s.equals(""))
-                user_surname.setText(s);
-        })
-        ;
-        homeViewModel.getUserBio().observe(getViewLifecycleOwner(), s -> {
-            if (!s.equals(""))
-                user_bio.setText(s);
-        });
     }
 
     private void setNFCExchangeListeners(View root) {

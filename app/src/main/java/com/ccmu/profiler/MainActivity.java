@@ -1,9 +1,11 @@
 package com.ccmu.profiler;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -11,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.ccmu.profiler.ui.edit.EditUserDataActivity;
+import com.ccmu.profiler.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
@@ -52,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (resultCode) {
-
+    protected void onNewIntent(Intent intent) {
+        String uri = intent.getStringExtra(HomeFragment.SET_URI_PROFILE_IMAGE_ID);
+        if (uri != null) {
+            ((ImageView) findViewById(R.id.profile_picture)).setImageURI(Uri.parse(uri));
+            Log.d("MainActivity - OnNewIntent", "SWAP IMAGE COMPLETED");
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onNewIntent(intent);
     }
 }

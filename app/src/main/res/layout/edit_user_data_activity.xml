@@ -9,32 +9,32 @@
         android:orientation="vertical"
         android:layout_marginHorizontal="15dp">
 
-        <TextView
+        <EditText
             android:id="@+id/first_name_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name_placeholder"
+            android:hint="@string/name_placeholder"
             android:textSize="35sp"
             android:paddingHorizontal="10dp"
             android:background="@drawable/border"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/last_name_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/surname_placeholder"
+            android:hint="@string/surname_placeholder"
             android:textSize="35sp"
             android:paddingHorizontal="10dp"
             android:background="@drawable/border"
             android:layout_marginBottom="15dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/bio_and_info_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bio_placeholder"
+            android:hint="@string/bio_placeholder"
             android:textSize="35sp"
             android:paddingHorizontal="10dp"
             android:background="@drawable/border"

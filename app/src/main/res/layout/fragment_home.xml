@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:textSize="30sp"
-                    android:text="@string/name_placeholder" />
+                    android:hint="@string/name_placeholder" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -53,13 +53,13 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:textSize="30sp"
-                    android:text="@string/surname_placeholder"
+                    android:hint="@string/surname_placeholder"
                     />
 
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/profilePic"
+                android:id="@+id/profile_picture"
                 android:contentDescription="@string/profile_picture"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
@@ -75,8 +75,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:textSize="40sp"
-            android:text="@string/bio_placeholder"
-            app:layout_constraintTop_toBottomOf="@id/profilePic"
+            android:hint="@string/bio_placeholder"
+            app:layout_constraintTop_toBottomOf="@id/profile_picture"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

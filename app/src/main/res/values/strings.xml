@@ -55,4 +55,8 @@
     <string name="register_user_title">Register your data</string>
     <string name="register_user_message">Please, insert your contact information</string>
     <string name="edit_profile_button_title">Profile</string>
+    <string name="set_home_button_title">Set home position</string>
+    <string name="set_work_button_title">Set work position</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="submit_button">Submit</string>
 </resources>
