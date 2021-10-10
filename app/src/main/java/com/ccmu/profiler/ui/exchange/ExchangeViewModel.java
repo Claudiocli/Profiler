@@ -1,14 +1,14 @@
-package com.ccmu.profiler.ui.organization;
+package com.ccmu.profiler.ui.exchange;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class OrganizationViewModel extends ViewModel {
+public class ExchangeViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
-    public OrganizationViewModel() {
+    public ExchangeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is organization fragment");
     }

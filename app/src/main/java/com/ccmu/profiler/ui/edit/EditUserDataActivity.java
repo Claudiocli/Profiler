@@ -3,8 +3,9 @@ package com.ccmu.profiler.ui.edit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.UriPermission;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,20 +18,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.ccmu.profiler.MainActivity;
 import com.ccmu.profiler.R;
-import com.ccmu.profiler.ui.home.HomeFragment;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class EditUserDataActivity extends Activity {
@@ -50,148 +39,30 @@ public class EditUserDataActivity extends Activity {
 
         setContentView(R.layout.edit_user_data_activity);
 
-        checkAndSetUserData();
+        updateEditingFieldsData();
 
         if (getIntent() != null && Objects.equals(getIntent().getStringExtra(EDIT_MODE_INTENT), REGISTER_USER_MODE))
             displayRegisterInfo();
 
-        if (!(new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME)).exists())
-            createUserDataFile();
-
-        setObserverToDataViews();
+        commitChangesToProfile();
     }
 
-    private void checkAndSetUserData() {
-        File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-        if (!file.exists())
-            return;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            ArrayList<String> userData = new ArrayList<>();
-            String currLine = reader.readLine();
-            while (currLine != null) {
-                userData.add(currLine);
-                currLine = reader.readLine();
-            }
-            if (userData.size() == 0)
-                return;
-            /*
-                Format:
-                NAME~Ciccio
-                SURNAME~Pasticcio
-                BIO~Born in xxxx, Ciccio, is a ...
-                LINKEDIN~https://
-                WEBSITE~https://
-                GOOGLE~https://
-                FACEBOOK~https://
-                WHATSAPP~https://
-                TELEGRAM~https://
-                .
-                .
-                .
-                OTHER~
-            */
-            String user_first_name = userData.get(0).substring(userData.get(0).indexOf(DATA_NAME_VALUE_DELIMITER) + 1);
-            String user_last_name = userData.get(1).substring(userData.get(1).indexOf(DATA_NAME_VALUE_DELIMITER) + 1);
-            String user_bio_and_info = userData.get(2).substring(userData.get(2).indexOf(DATA_NAME_VALUE_DELIMITER) + 1);
-            userData.remove(0);
-            userData.remove(1);
-            userData.remove(2);
-            // Now there are only links
-            for (String s : userData) {
-                String linkTo = s.substring(0, s.indexOf(DATA_NAME_VALUE_DELIMITER));
-                String link = s.substring(s.indexOf(DATA_NAME_VALUE_DELIMITER) + 1);
+    private void updateEditingFieldsData() {
+        ((TextView) findViewById(R.id.linkedin_edit_link)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Linkedin_link", "Linkedin"));
+        ((TextView) findViewById(R.id.website_edit_link)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Website_link", "Website"));
+        ((TextView) findViewById(R.id.google_edit_link)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Google_link", "Google"));
+        ((TextView) findViewById(R.id.facebook_link_edit)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Facebook_link", "Facebook"));
+        ((TextView) findViewById(R.id.whatsapp_edit_link)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Whatsapp_link", "Whatsapp"));
+        ((TextView) findViewById(R.id.telegram_edit_link)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Telegram_link", "Telegram"));
 
-                if (!link.startsWith("http://") && !link.startsWith("https://"))
-                    link = "http://" + link;
+        ((EditText) findViewById(R.id.first_name_edit)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("First_name", "First Name"));
+        ((EditText) findViewById(R.id.last_name_edit)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Last_name", "Last name"));
+        ((EditText) findViewById(R.id.bio_and_info_edit)).setText(getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Bio", "Bio"));
 
-                if (linkTo.equals(getResources().getString(R.string.linkedin_comparison)))
-                    ((TextView) findViewById(R.id.linkedin_edit_link)).setText(link);
-                else if (linkTo.equals(getResources().getString(R.string.website_comparison)))
-                    ((TextView) findViewById(R.id.website_edit_link)).setText(link);
-                else if (linkTo.equals(getResources().getString(R.string.google_comparison)))
-                    ((TextView) findViewById(R.id.google_edit_link)).setText(link);
-                else if (linkTo.equals(getResources().getString(R.string.facebook_comparison)))
-                    ((TextView) findViewById(R.id.facebook_link_edit)).setText(link);
-                else if (linkTo.equals(getResources().getString(R.string.whatsapp_comparison)))
-                    ((TextView) findViewById(R.id.whatsapp_edit_link)).setText(link);
-                else if (linkTo.equals(getResources().getString(R.string.telegram_comparison)))
-                    ((TextView) findViewById(R.id.telegram_edit_link)).setText(link);
-            }
+        String uri = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Uri_profile_pic", "");
+        if (uri != "")
+            ((ImageView) findViewById(R.id.image_edit)).setImageURI(Uri.parse(uri));
 
-            ((EditText) findViewById(R.id.first_name_edit)).setText(user_first_name);
-            ((EditText) findViewById(R.id.last_name_edit)).setText(user_last_name);
-            ((EditText) findViewById(R.id.bio_and_info_edit)).setText(user_bio_and_info);
-
-            File image = new File(getFilesDir() + MainActivity.USER_DATA_IMAGE_FILE_NAME);
-            if (image.exists()) {
-                Uri uri = Uri.parse(Files.readAllLines(image.toPath()).get(0));
-                // FIXME:
-//                ((ImageView) findViewById(R.id.image_edit)).setImageURI(uri);
-            }
-
-            reader.close();
-
-        } catch (FileNotFoundException e) {
-            Log.e("USER_DATA_FILE - FileNotFoundException", e.toString());
-        } catch (IOException e) {
-            Log.e("USER_DATA_FILE - IOException", e.toString());
-        }
-    }
-
-    private void createUserDataFile() {
-        try {
-            File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-            boolean successfullyCreated = file.createNewFile();
-
-            if (!successfullyCreated) {
-                successfullyCreated = file.delete();
-                if (successfullyCreated)
-                    successfullyCreated = file.createNewFile();
-            }
-
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            /*
-                Format:
-                NAME~Ciccio
-                SURNAME~Pasticcio
-                BIO~Born in xxxx, Ciccio, is a ...
-                LINKEDIN~https://
-                WEBSITE~https://
-                GOOGLE~https://
-                FACEBOOK~https://
-                WHATSAPP~https://
-                TELEGRAM~https://
-                .
-                .
-                .
-                OTHER~
-            */
-            String[] setup = {
-                    getResources().getString(R.string.name_format) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.surname_format) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.bio_format) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.linkedin_comparison) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.website_comparison) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.google_comparison) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.facebook_comparison) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.whatsapp_comparison) + DATA_NAME_VALUE_DELIMITER,
-                    getResources().getString(R.string.telegram_comparison) + DATA_NAME_VALUE_DELIMITER
-            };
-
-            for (String s : setup) {
-                bw.append(s);
-                bw.newLine();
-            }
-
-            bw.close();
-
-            if (!successfullyCreated)
-                Log.d("EditUserData - FILE CREATION", "File already exists. It should not.");
-            Log.d("CREATE FILE DATA", "CREATION FILE DATA DONE");
-        } catch (IOException e) {
-            Log.e("EditUserData - FILE CREATION", e.toString());
-        }
     }
 
     private void displayRegisterInfo() {
@@ -203,7 +74,7 @@ public class EditUserDataActivity extends Activity {
     }
 
     @SuppressLint("IntentReset")
-    private void setObserverToDataViews() {
+    private void commitChangesToProfile() {
         ((TextView) findViewById(R.id.first_name_edit)).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -215,18 +86,9 @@ public class EditUserDataActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-                try {
-                    List<String> lines = Files.readAllLines(file.toPath());
-                    if (lines.size() == 0)
-                        createUserDataFile();
-                    Log.d("DEBUG LINES TEST", lines.get(0));
-                    lines.set(0, getResources().getString(R.string.name_format) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                    Log.d("DEBUG LINES TEST", lines.get(0));
-                    Files.write(file.toPath(), lines);
-                } catch (IOException e) {
-                    Log.e("EditUserData - EDIT FIRST NAME VALUE", "data file should exists. Unknown I/O error");
-                }
+                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
+                editor.putString("First_name", s.toString());
+                editor.apply();
             }
         });
         ((TextView) findViewById(R.id.last_name_edit)).addTextChangedListener(new TextWatcher() {
@@ -240,16 +102,9 @@ public class EditUserDataActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-                try {
-                    List<String> lines = Files.readAllLines(file.toPath());
-                    if (lines.size() == 0)
-                        createUserDataFile();
-                    lines.set(1, getResources().getString(R.string.surname_format) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                    Files.write(file.toPath(), lines);
-                } catch (IOException e) {
-                    Log.e("EditUserData - EDIT LAST NAME VALUE", "data file should exists. Unknown I/O error");
-                }
+                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
+                editor.putString("Last_name", s.toString());
+                editor.apply();
             }
         });
         ((TextView) findViewById(R.id.bio_and_info_edit)).addTextChangedListener(new TextWatcher() {
@@ -263,16 +118,9 @@ public class EditUserDataActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-                try {
-                    List<String> lines = Files.readAllLines(file.toPath());
-                    if (lines.size() == 0)
-                        createUserDataFile();
-                    lines.set(2, getResources().getString(R.string.bio_format) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                    Files.write(file.toPath(), lines);
-                } catch (IOException e) {
-                    Log.e("EditUserData - EDIT BIO INFO VALUE", "data file should exists. Unknown I/O error");
-                }
+                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
+                editor.putString("Bio", s.toString());
+                editor.apply();
             }
         });
 
@@ -289,7 +137,6 @@ public class EditUserDataActivity extends Activity {
             startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST_CODE);
         });
 
-        // TODO: add an observer to every link
         int[] linkViewsIds = new int[]{
                 R.id.linkedin_edit_link, R.id.google_edit_link,
                 R.id.website_edit_link, R.id.facebook_link_edit,
@@ -309,77 +156,36 @@ public class EditUserDataActivity extends Activity {
                 @SuppressLint("NonConstantResourceId")
                 @Override
                 public void afterTextChanged(Editable s) {
-                    File file = new File(getFilesDir() + MainActivity.USER_DATA_FILE_NAME);
-                    try {
-                        List<String> lines = Files.readAllLines(file.toPath());
-                        /*
-                            Format:
-                            NAME~Ciccio
-                            SURNAME~Pasticcio
-                            BIO~Born in xxxx, Ciccio, is a ...
-                            LINKEDIN~https://
-                            WEBSITE~https://
-                            GOOGLE~https://
-                            FACEBOOK~https://
-                            WHATSAPP~https://
-                            TELEGRAM~https://
-                            .
-                            .
-                            .
-                            OTHER~
-                        */
-                        switch (id) {
-                            case R.id.linkedin_edit_link:
-                                findViewById(R.id.linkedinPersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(3, getResources().getString(R.string.linkedin_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                            case R.id.website_edit_link:
-                                findViewById(R.id.websitePersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(4, getResources().getString(R.string.website_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                            case R.id.google_edit_link:
-                                findViewById(R.id.googlePersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(5, getResources().getString(R.string.google_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                            case R.id.facebook_link_edit:
-                                findViewById(R.id.facebookPersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(6, getResources().getString(R.string.facebook_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                            case R.id.whatsapp_edit_link:
-                                findViewById(R.id.whatsappPersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(7, getResources().getString(R.string.whatsapp_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                            case R.id.telegram_edit_link:
-                                findViewById(R.id.telegramPersonalLink).setOnClickListener(v -> {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse(s.toString()));
-                                    startActivity(intent);
-                                });
-                                lines.set(8, getResources().getString(R.string.telegram_comparison) + DATA_NAME_VALUE_DELIMITER + s.toString());
-                                break;
-                        }
-                    } catch (IOException e) {
-                        Log.e("EditUserData - EDIT LINK VALUES", "data file should exists. Unknown I/O error");
+                    //if (!Pattern.matches("/^[a-z](?:[-a-z0-9\\+\\.])*:(?:\\/\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:])*@)?(?:\\[(?:(?:(?:[0-9a-f]{1,4}:){6}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|::(?:[0-9a-f]{1,4}:){5}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|v[0-9a-f]+\\.[-a-z0-9\\._~!\\$&'\\(\\)\\*\\+,;=:]+)\\]|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}|(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=])*)(?::[0-9]*)?(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@]))*)*|\\/(?:(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@]))+)(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@]))*)*)?|(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@]))+)(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@]))*)*|(?!(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@])))(?:\\?(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@])|[\\x{E000}-\\x{F8FF}\\x{F0000}-\\x{FFFFD}\\x{100000}-\\x{10FFFD}\\/\\?])*)?(?:\\#(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&'\\(\\)\\*\\+,;=:@])|[\\/\\?])*)?$/i\n", s))
+                    //    return;
+                    //Log.d("EditUserLinks","valid url");
+                    SharedPreferences sp = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    switch (id) {
+                        case R.id.linkedin_edit_link:
+                            editor.putString("Linkedin_link", s.toString());
+                            editor.apply();
+                            break;
+                        case R.id.website_edit_link:
+                            editor.putString("Website_link", s.toString());
+                            editor.apply();
+                            break;
+                        case R.id.google_edit_link:
+                            editor.putString("Google_link", s.toString());
+                            editor.apply();
+                            break;
+                        case R.id.facebook_link_edit:
+                            editor.putString("Facebook_link", s.toString());
+                            editor.apply();
+                            break;
+                        case R.id.whatsapp_edit_link:
+                            editor.putString("Whatsapp_link", s.toString());
+                            editor.apply();
+                            break;
+                        case R.id.telegram_edit_link:
+                            editor.putString("Telegram_link", s.toString());
+                            editor.apply();
+                            break;
                     }
                 }
             });
@@ -390,40 +196,11 @@ public class EditUserDataActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            File file = new File(getFilesDir() + MainActivity.USER_DATA_IMAGE_FILE_NAME);
-            try {
-                boolean success = false;
-                if (!file.exists())
-                    success = file.createNewFile();
-                if (success) {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                    bw.write(data.getData().toString());
-                    Log.d("EditUserDataActivity", "WRITTEN URI INTO FILE");
-                    bw.close();
-                }
-                new Intent(this, MainActivity.class).putExtra(
-                        HomeFragment.SET_URI_PROFILE_IMAGE_ID, data.getData().toString());
-            } catch (IOException e) {
-                Log.e("EditUserDataActivity WRITE IMAGE URI", e.toString());
-            }
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
+            editor.putString("Uri_profile_pic", data.getData().toString());
+            editor.apply();
             ((ImageView) findViewById(R.id.image_edit)).setImageURI(data.getData());
             Log.d("EditUserDataActivity", "CHANGED IMAGE ON EDIT MENU");
-
-            List<UriPermission> listPermissions = getContentResolver().getPersistedUriPermissions();
-            boolean found = false;
-            for (UriPermission u : listPermissions)
-                if (u.getUri().equals(data.getData())) {
-                    found = true;
-                    break;
-                }
-            // FIXME:
-//            if (!found)
-//                getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            Intent i = new Intent(this, MainActivity.class).putExtra(
-                    HomeFragment.SET_URI_PROFILE_IMAGE_ID, data.getData().toString());
-            Log.d("EditUserDataActivity", "STARTING ACTIVITY PROFILE IMAGE CHANGE");
-            startActivity(i);
         }
     }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Profiler</string>
     <string name="title_home">Home</string>
-    <string name="title_organization">Organization</string>
+    <string name="exchange">Exchange</string>
     <string name="title_contacts">Contacts</string>
 
     <string name="name_placeholder">First name</string>
@@ -32,6 +32,7 @@
     <string name="receive_contact_button">Receive Contact</string>
 
     <string name="settings_buttons_title">Settings</string>
+    <string name="add_contact_settings">Add a contact</string>
 
     <string name="sort_by">Sort by</string>
 
@@ -49,6 +50,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
+    <string name="add">Add</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
     <string name="cancel">Cancel</string>

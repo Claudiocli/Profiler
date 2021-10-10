@@ -1,5 +1,7 @@
 package com.ccmu.profiler.ui.contacts;
 
+import static android.Manifest.permission.READ_CONTACTS;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -18,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -32,8 +35,6 @@ import com.ccmu.profiler.gesture.OnSwipeTouchListener;
 import com.ccmu.profiler.ui.home.HomeFragment;
 
 import java.util.ArrayList;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 public class ContactsFragment extends Fragment {
 
@@ -112,6 +113,7 @@ public class ContactsFragment extends Fragment {
                 numbersTextView.setGravity(Gravity.CENTER);
                 linearLayout.addView(numbersTextView);
             }
+            linearLayout.addView(new Button(linearLayout.getContext()));
 
             GradientDrawable border = new GradientDrawable();
             border.setColor(0xFFFFFFFF);
@@ -146,6 +148,10 @@ public class ContactsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.contacts_settings) {
             startActivity(new Intent(getContext(), ContactSettings.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.add_contact) {
+            startActivity(new Intent(getContext(), AddContactActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

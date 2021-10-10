@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -82,10 +83,10 @@ public class NFCActivity extends Activity {
                     IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
                     tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
                     writeTagFilters = new IntentFilter[]{tagDetected};
-                    // TODO: Display waiting animation until data recived
+                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     break;
                 default:
-                    // TODO: Send an error message
+                    Toast.makeText(context, "Unexpected request received. Canceling", Toast.LENGTH_LONG);
                     break;
             }
         else
@@ -125,7 +126,7 @@ public class NFCActivity extends Activity {
         NdefRecord[] records = {createRecord(formattedMessage.toString())};
         NdefMessage message = new NdefMessage(records);
         if (nfcTag == null)
-            return; // TODO: Display an error message?
+            return;
         Ndef ndef = Ndef.get(nfcTag);
         ndef.connect();
         ndef.writeNdefMessage(message);

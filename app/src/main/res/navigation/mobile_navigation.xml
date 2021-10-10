@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_organization"
-        android:name="com.ccmu.profiler.ui.organization.OrganizationFragment"
-        android:label="@string/title_organization"
-        tools:layout="@layout/fragment_organization" />
+        android:name="com.ccmu.profiler.ui.exchange.ExchangeFragment"
+        android:label="@string/exchange"
+        tools:layout="@layout/fragment_exchange" />
 
     <fragment
         android:id="@+id/navigation_contacts"

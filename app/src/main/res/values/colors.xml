@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#183E63</color>
     <color name="colorAccent">#3DDC97</color>
 
+    <color name="color_cyan_darker">#39627b</color>
+
     <color name="button_background">#A4A5AE</color>
     <color name="button_background_darker">#4D4E56</color>
     <color name="home_background">#EFF5FB</color>

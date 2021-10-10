@@ -177,34 +177,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:weightSum="2">
-
-                <Button
-                    android:id="@+id/nfc_receive_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/receive_contact_button"
-                    android:backgroundTint="#00FFFFFF"
-                    android:textAlignment="center"
-                    style="?buttonBarButtonStyle" />
-
-                <Button
-                    android:id="@+id/nfc_send_my_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/send_contact_button"
-                    android:backgroundTint="#00FFFFFF"
-                    android:textAlignment="center"
-                    style="?buttonBarButtonStyle" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>
