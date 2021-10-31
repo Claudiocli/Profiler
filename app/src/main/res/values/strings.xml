@@ -37,7 +37,7 @@
     <string name="sort_by">Sort by</string>
 
     <string name="title_alert_no_permission">No permission granted</string>
-    <string name="message_alert_no_permission">The app need to access your contactModels to ensure a fully experience</string>
+    <string name="message_alert_no_permission">The app need to access your contacts and calls to ensure a fully experience</string>
 
     <string name="title_alert_error_nfc_mode">Error on initialization NFC</string>
     <string name="message_alert_error_nfc_mode">An error was occurred while initializing a NFC connection</string>
@@ -61,4 +61,8 @@
     <string name="set_work_button_title">Set work position</string>
     <string name="title_activity_maps">Map</string>
     <string name="submit_button">Submit</string>
+
+    <string name="favourite_contacts_text">Favourite contacts</string>
+    <string name="contacts_text">Contacts list</string>
+
 </resources>

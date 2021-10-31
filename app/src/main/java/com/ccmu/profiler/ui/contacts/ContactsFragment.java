@@ -1,5 +1,6 @@
 package com.ccmu.profiler.ui.contacts;
 
+import static android.Manifest.permission.READ_CALL_LOG;
 import static android.Manifest.permission.READ_CONTACTS;
 
 import android.annotation.SuppressLint;
@@ -10,7 +11,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,10 +38,12 @@ import com.ccmu.profiler.gesture.OnSwipeTouchListener;
 import com.ccmu.profiler.ui.home.HomeFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactsFragment extends Fragment {
 
     private static final int REQUEST_CODE_CONTACTS_READ = 1;
+    private static final int REQUEST_CODE_CALL_READ = 2;
 
     public static final String CONTACT_NAME_INTENT_ID = "contact_name_intent_id";
     public static final String CONTACT_SURNAME_INTENT_ID = "contact_surname_intent_id";
@@ -47,6 +52,7 @@ public class ContactsFragment extends Fragment {
     public static final String ORDER_BY_LAST_NAME = "order_by_last_name";
 
     private ListView contactsList;
+    private ListView favouriteContactsList;
     private String defaultOrder = ORDER_BY_FIRST_NAME;
 
     @SuppressLint("StaticFieldLeak")
@@ -64,14 +70,78 @@ public class ContactsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_contacts, container, false);
 
         contactsList = root.findViewById(R.id.contactsList);
+        favouriteContactsList = root.findViewById(R.id.favouriteContactsList);
 
         if (requireContext().checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
             requireActivity().requestPermissions(new String[]{READ_CONTACTS}, REQUEST_CODE_CONTACTS_READ);
         else
             doShowContacts();
 
+        if (requireContext().checkSelfPermission(READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
+            requireActivity().requestPermissions(new String[]{READ_CALL_LOG}, REQUEST_CODE_CONTACTS_READ);
+        else
+            getFavContacts();
+
         contactsList.setOnTouchListener(new OnSwipeTouchListener(contactsList));
         contactsList.setOnItemClickListener((parent, view, position, id) -> {
+            LayoutInflater layoutInflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams") View popupView = layoutInflater.inflate(R.layout.popup_info_contact, null);
+
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+
+            TextView nameTextView =
+                    popupView.findViewById(R.id.popup_contact_info_name);
+            //noinspection StringBufferReplaceableByString
+            nameTextView.setText(
+                    new StringBuilder().append(getResources().getString(R.string.name_placeholder))
+                            .append(": ")
+                            .append(((ContactModel) parent.getItemAtPosition(position))
+                                    .getOnlyName()).toString());
+            nameTextView.setTextSize(35);
+
+            TextView surnameTextView = popupView.findViewById(R.id.popup_contact_info_surname);
+            //noinspection StringBufferReplaceableByString
+            surnameTextView.setText(
+                    new StringBuilder().append(getResources().getString(R.string.surname_placeholder))
+                            .append(": ")
+                            .append(((ContactModel) parent.getItemAtPosition(position))
+                                    .getOnlySurname()).toString());
+            surnameTextView.setTextSize(35);
+
+            LinearLayout linearLayout = popupView.findViewById(R.id.linear_layout_popup_contact_info);
+            String[] numbers = ((ContactModel) parent.getItemAtPosition(position)).getNumbers();
+            if (numbers.length != 0) {
+                TextView numbersTextView = new TextView(popupView.getContext());
+                if (numbers.length > 1) {
+                    numbersTextView.setText("Numbers: ");
+                    for (String number : numbers)
+                        numbersTextView.append("\n" + number);
+                } else
+                    numbersTextView.setText("Number: " + numbers[0]);
+
+                numbersTextView.setTextSize(35);
+                numbersTextView.setGravity(Gravity.CENTER);
+                linearLayout.addView(numbersTextView);
+            }
+
+            GradientDrawable border = new GradientDrawable();
+            border.setColor(0xFFFFFFFF);
+            int borderStroke = 8;
+            border.setStroke(borderStroke, 0xFF000000);
+            linearLayout.setBackground(border);
+            linearLayout.setPadding(borderStroke * 2, borderStroke * 2, borderStroke * 2, borderStroke * 2);
+
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            popupView.setOnTouchListener((v, event) -> {
+                popupWindow.dismiss();
+                return true;
+            });
+        });
+
+        favouriteContactsList.setOnTouchListener(new OnSwipeTouchListener(favouriteContactsList));
+        favouriteContactsList.setOnItemClickListener((parent, view, position, id) -> {
             LayoutInflater layoutInflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View popupView = layoutInflater.inflate(R.layout.popup_info_contact, null);
 
@@ -207,6 +277,66 @@ public class ContactsFragment extends Fragment {
             cursor.close();
     }
 
+    private void getFavContacts() {
+
+        if (favouriteContactsList.getAdapter() != null)
+            ((ContactAdapter) favouriteContactsList.getAdapter()).clear();
+
+        List<String> numberMostInteractedWith = new ArrayList<>();
+        List<ContactModel> contactsMostInteractedWith = new ArrayList<>();
+
+        ContactAdapter contactsFavAdapter = new ContactAdapter(requireContext(), contactsMostInteractedWith);
+
+        favouriteContactsList.setAdapter(contactsFavAdapter);
+
+        String[] projection = new String[]{
+                ContactsContract.Contacts._ID,
+                CallLog.Calls._ID,
+                CallLog.Calls.NUMBER,
+                CallLog.Calls.CACHED_NAME,
+                CallLog.Calls.DATE
+        };
+
+        String sortOrder = String.format("%s limit 100 ", CallLog.Calls.DATE + " DESC");
+
+        Cursor cursor = requireContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, projection, null, null, sortOrder);
+
+        while (cursor.moveToNext()) {
+            String phoneNumber = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+
+            if (phoneNumber == null || numberMostInteractedWith.contains(phoneNumber))
+                continue;
+
+            numberMostInteractedWith.add(phoneNumber);
+        }
+
+        for (String number : numberMostInteractedWith) {
+            Cursor contactLookup = requireContext().getContentResolver().query(Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, number), new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID}, null, null, null);
+            int phoneContactId = -1;
+            String name = null;
+
+            while (contactLookup.moveToNext()) {
+                phoneContactId = contactLookup.getInt(contactLookup.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                name = contactLookup.getString(contactLookup.getColumnIndexOrThrow(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            }
+            contactLookup.close();
+
+            if (phoneContactId == -1 || name == null)
+                continue;
+
+            String fomrattedNumber = "(" + number.substring(0, 3) + ") " + number.substring(3, 6) + "-" + number.substring(6);
+            contactsMostInteractedWith.add(new ContactModel(String.valueOf(phoneContactId), name, new String[]{fomrattedNumber}));
+        }
+
+        if (defaultOrder.equals(ORDER_BY_LAST_NAME)) {
+            contactsFavAdapter.sort((o1, o2) -> o1.getOnlySurname().compareTo(o2.getOnlySurname()));
+            Log.d("ContactsSort", "Favourite contacts sorted by last name");
+        } else {
+            contactsFavAdapter.sort((o1, o2) -> o1.getOnlyName().compareTo(o2.getOnlyName()));
+            Log.d("ContactsSort", "Favourite contacts sorted by first name");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -214,6 +344,10 @@ public class ContactsFragment extends Fragment {
             requireActivity().requestPermissions(new String[]{READ_CONTACTS}, REQUEST_CODE_CONTACTS_READ);
         else
             doShowContacts();
+        if (requireContext().checkSelfPermission(READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
+            requireActivity().requestPermissions(new String[]{READ_CALL_LOG}, REQUEST_CODE_CONTACTS_READ);
+        else
+            getFavContacts();
     }
 
     @Override
@@ -222,6 +356,20 @@ public class ContactsFragment extends Fragment {
         if (requestCode == REQUEST_CODE_CONTACTS_READ) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 doShowContacts();
+            } else {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.title_alert_no_permission)
+                        .setMessage(R.string.message_alert_no_permission)
+                        .setNeutralButton(R.string.ok, (dialog, which) -> getParentFragmentManager().beginTransaction()
+                                .replace(R.id.navigation_home, new HomeFragment())
+                                .commit())
+                        .setIcon(R.drawable.ic_error)
+                        .show();
+            }
+        }
+        if (requestCode == REQUEST_CODE_CALL_READ) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getFavContacts();
             } else {
                 new AlertDialog.Builder(getContext())
                         .setTitle(R.string.title_alert_no_permission)

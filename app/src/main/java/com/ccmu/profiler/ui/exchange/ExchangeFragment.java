@@ -37,14 +37,14 @@ public class ExchangeFragment extends Fragment {
             if (NFCActivity.isNFCDisabled())
                 return;
             Intent i = new Intent(getContext(), NFCActivity.class);
-            i.putExtra(NFCActivity.ID_INTENT_DATA, NFCActivity.NFC_READ_MODE);
+            i.putExtra(NFCActivity.MODE, NFCActivity.NFC_READ_MODE);
             startActivity(i);
         });
         root.findViewById(R.id.nfc_send_my_contact).setOnClickListener(v -> {
             if (NFCActivity.isNFCDisabled())
                 return;
             Intent i = new Intent(getContext(), NFCActivity.class);
-            i.putExtra(NFCActivity.ID_INTENT_DATA, NFCActivity.NFC_WRITE_MODE);
+            i.putExtra(NFCActivity.MODE, NFCActivity.NFC_WRITE_MODE);
             startActivity(i);
         });
     }

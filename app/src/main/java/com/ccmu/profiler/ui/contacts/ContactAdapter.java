@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.ccmu.profiler.R;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ContactAdapter extends ArrayAdapter<ContactModel> {
@@ -27,7 +27,7 @@ public class ContactAdapter extends ArrayAdapter<ContactModel> {
      * @param context  The current context.
      * @param resource The resource ID for a layout file containing a TextView to use when
      */
-    public ContactAdapter(@NonNull Context context, ArrayList<ContactModel> resource) {
+    public ContactAdapter(@NonNull Context context, List<ContactModel> resource) {
         super(context, 0, resource);
     }
 

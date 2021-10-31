@@ -6,11 +6,57 @@
     android:background="@color/home_background"
     android:backgroundTint="@color/home_background_tint">
 
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/contactsList">
+        android:orientation="vertical"
+        android:weightSum="4">
 
-    </ListView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:weightSum="4">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3.5"
+                android:text="@string/favourite_contacts_text"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <ListView
+                android:id="@+id/favouriteContactsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight=".5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="4">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3.8"
+                android:text="@string/contacts_text"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <ListView
+                android:id="@+id/contactsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight=".2" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
