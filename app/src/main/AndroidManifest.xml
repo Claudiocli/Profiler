@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ccmu.profiler">
 
     <!--
@@ -13,6 +14,9 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
 
     <uses-feature
         android:name="android.nfc"
@@ -23,7 +27,8 @@
         android:icon="@mipmap/ic_profiler"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,26 +44,32 @@
 
         <activity
             android:name=".map.MapActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.nfc.NFCActivity">
+        <activity
+            android:name=".ui.nfc.NFCActivity"
+            tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.contacts.ContactSettings"></activity>
+        <activity android:name=".ui.contacts.ContactSettings" />
         <activity android:name=".ui.contacts.AddContactActivity" />
-        <activity android:name=".ui.edit.EditUserDataActivity"></activity>
+        <activity android:name=".ui.edit.EditUserDataActivity" />
+        <activity android:name=".time.TimeIntervalsActivity" />
+
+        <service android:name=".time.DNDService" />
     </application>
 
 </manifest>

@@ -6,4 +6,7 @@
     <item
         android:id="@+id/set_work_position"
         android:title="@string/set_work_button_title" />
+    <item
+        android:id="@+id/set_time_intervals"
+        android:title="@string/set_time_intervals" />
 </menu>

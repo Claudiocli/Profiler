@@ -21,8 +21,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.ccmu.profiler.MainActivity;
 import com.ccmu.profiler.R;
 import com.ccmu.profiler.map.MapActivity;
+import com.ccmu.profiler.time.TimeIntervalsActivity;
 import com.ccmu.profiler.ui.edit.EditUserDataActivity;
 
 public class HomeFragment extends Fragment {
@@ -61,6 +63,10 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(getContext(), MapActivity.class));
             return true;
         }
+        if (item.getItemId() == R.id.set_time_intervals) {
+            startActivity(new Intent(getContext(), TimeIntervalsActivity.class));
+            return true;
+        }
         if (item.getItemId() == R.id.home_profile) {
             startActivity(new Intent(getContext(), EditUserDataActivity.class));
             return true;
@@ -69,7 +75,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateUserData(View root) {
-        SharedPreferences sp = getContext().getSharedPreferences("SP", Context.MODE_PRIVATE);
+        SharedPreferences sp = getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
 
         root.findViewById(R.id.linkedinPersonalLink).setOnClickListener(view -> {
             String s = sp.getString("Linkedin_link", "Linkedin");
@@ -120,15 +126,15 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        ((TextView) root.findViewById(R.id.name)).setText(getContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("First_name", "First name"));
-        ((TextView) root.findViewById(R.id.surname)).setText(getContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Last_name", "Last name"));
-        ((TextView) root.findViewById(R.id.bio)).setText(getContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Bio", "Bio"));
+        ((TextView) root.findViewById(R.id.name)).setText(getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("First_name", "First name"));
+        ((TextView) root.findViewById(R.id.surname)).setText(getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Last_name", "Last name"));
+        ((TextView) root.findViewById(R.id.bio)).setText(getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Bio", "Bio"));
 
         Log.d("UPDATE INFO USER", "name edited correctly");
         Log.d("UPDATE INFO USER", "surname edited correctly");
         Log.d("UPDATE INFO USER", "bio edited correctly");
 
-        String uri = getContext().getSharedPreferences("SP", Context.MODE_PRIVATE).getString("Uri_profile_pic", "");
+        String uri = getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Uri_profile_pic", "");
         if (uri != "")
             ((ImageView) root.findViewById(R.id.profile_picture)).setImageURI(Uri.parse(uri));
     }

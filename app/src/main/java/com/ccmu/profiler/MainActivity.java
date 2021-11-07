@@ -19,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String SHARED_PROPERTY_KEY = "SP";
 
     public static final String USER_DATA_FILE_NAME = "user.txt";
     public static final String USER_DATA_IMAGE_FILE_NAME = "user_image.txt";

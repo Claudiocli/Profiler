@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.ccmu.profiler.MainActivity;
 import com.ccmu.profiler.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,7 +60,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void setupButton() {
         // Listener to save the last location of `lastMarker`
         (findViewById(R.id.submit_map_location)).setOnClickListener(v -> {
-            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).edit();
 
             editor.putString("Work_location_latitude", String.valueOf(lastMarker.getPosition().latitude));
             editor.putString("Work_location_longitude", String.valueOf(lastMarker.getPosition().longitude));
