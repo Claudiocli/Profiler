@@ -9,4 +9,7 @@
     <item
         android:id="@+id/set_time_intervals"
         android:title="@string/set_time_intervals" />
+    <item
+        android:id="@+id/home_settings"
+        android:title="@string/settings_buttons_title" />
 </menu>

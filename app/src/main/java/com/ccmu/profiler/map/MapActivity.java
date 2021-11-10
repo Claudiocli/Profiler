@@ -31,6 +31,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public static final String WORK_LOCATION_DATA_INTENT_ID = "work_location_data_intent_id";
     public static final String GET_LOCATION = "get_location";
 
+    public static final String WORK_LATITUDE_KEY = "Work_location_latitude";
+    public static final String WORK_LONGITUDE_KEY = "Work_location_longitude";
+
     public static final String USER_LOCATION_DATA = "user_location_data.txt";
     public static final String HOME_LOCATION_FORMAT = "HOME_LOCATION";
     public static final String WORK_LOCATION_FORMAT = "WORK_LOCATION";
@@ -62,8 +65,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         (findViewById(R.id.submit_map_location)).setOnClickListener(v -> {
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).edit();
 
-            editor.putString("Work_location_latitude", String.valueOf(lastMarker.getPosition().latitude));
-            editor.putString("Work_location_longitude", String.valueOf(lastMarker.getPosition().longitude));
+            editor.putString(WORK_LATITUDE_KEY, String.valueOf(lastMarker.getPosition().latitude));
+            editor.putString(WORK_LONGITUDE_KEY, String.valueOf(lastMarker.getPosition().longitude));
             editor.apply();
 
             Toast.makeText(this, "Work location saved!", Toast.LENGTH_SHORT).show();
@@ -88,7 +91,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             CurrentLocation.LocationResult locationResult = new CurrentLocation.LocationResult() {
                 @Override
                 public void gotLocation(Location location) {
-                    LatLng here = new LatLng(location.getLatitude(), location.getLongitude());
+                    LatLng here;
+                    SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
+                    if (sp.getString(WORK_LATITUDE_KEY, null) != null && sp.getString(WORK_LONGITUDE_KEY, null) != null) {
+                        here = new LatLng(Double.parseDouble(sp.getString(WORK_LATITUDE_KEY, "0")), Double.parseDouble(sp.getString(WORK_LONGITUDE_KEY, "0")));
+                    } else {
+                        here = new LatLng(location.getLatitude(), location.getLongitude());
+                    }
                     Log.d("OnMapReady - LocationResult CallBack", "Got \"here\" location");
                     googleMap.addMarker(new MarkerOptions()
                             .position(here)

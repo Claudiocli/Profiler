@@ -71,6 +71,10 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(getContext(), EditUserDataActivity.class));
             return true;
         }
+        if (item.getItemId() == R.id.home_settings) {
+            startActivity(new Intent(getContext(), HomeSettings.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -68,6 +68,7 @@
         <activity android:name=".ui.contacts.AddContactActivity" />
         <activity android:name=".ui.edit.EditUserDataActivity" />
         <activity android:name=".time.TimeIntervalsActivity" />
+        <activity android:name=".ui.home.HomeSettings" />
 
         <service android:name=".time.DNDService" />
     </application>

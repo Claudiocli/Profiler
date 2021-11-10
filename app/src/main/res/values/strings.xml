@@ -71,6 +71,8 @@
     <string name="favourite_contacts_text">Favourite contacts</string>
     <string name="contacts_text">Contacts list</string>
 
+    <string name="dndmaw_text_button">Enable Do Not Disturb Me At Work mode</string>
+
     <string name="notification_permissions_needed">Notification permissions are needed to enable/disable do not disturb mode</string>
 
 </resources>
