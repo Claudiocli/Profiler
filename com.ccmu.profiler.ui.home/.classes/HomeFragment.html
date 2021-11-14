@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: HomeFragment</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler.ui.home</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: HomeFragment (com.ccmu.profiler.ui.home)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">HomeFragment</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 12)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 65)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler.ui.home;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.content.Context;
+        <i>4</i>&nbsp;import android.content.Intent;
+        <i>5</i>&nbsp;import android.content.SharedPreferences;
+        <i>6</i>&nbsp;import android.net.Uri;
+        <i>7</i>&nbsp;import android.os.Bundle;
+        <i>8</i>&nbsp;import android.text.Html;
+        <i>9</i>&nbsp;import android.util.Log;
+        <i>10</i>&nbsp;import android.view.LayoutInflater;
+        <i>11</i>&nbsp;import android.view.Menu;
+        <i>12</i>&nbsp;import android.view.MenuInflater;
+        <i>13</i>&nbsp;import android.view.MenuItem;
+        <i>14</i>&nbsp;import android.view.View;
+        <i>15</i>&nbsp;import android.view.ViewGroup;
+        <i>16</i>&nbsp;import android.widget.ImageView;
+        <i>17</i>&nbsp;import android.widget.TextView;
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp;import androidx.annotation.NonNull;
+        <i>20</i>&nbsp;import androidx.annotation.Nullable;
+        <i>21</i>&nbsp;import androidx.fragment.app.Fragment;
+        <i>22</i>&nbsp;import androidx.lifecycle.ViewModelProvider;
+        <i>23</i>&nbsp;
+        <i>24</i>&nbsp;import com.ccmu.profiler.R;
+        <i>25</i>&nbsp;import com.ccmu.profiler.map.MapActivity;
+        <i>26</i>&nbsp;import com.ccmu.profiler.ui.edit.EditUserDataActivity;
+        <i>27</i>&nbsp;
+        <b class="nc"><i>28</i>&nbsp;public class HomeFragment extends Fragment {</b>
+        <i>29</i>&nbsp;
+        <i>30</i>&nbsp; public static final String SET_URI_PROFILE_IMAGE_ID = &quot;set_bitmap_id&quot;;
+        <i>31</i>&nbsp;
+        <i>32</i>&nbsp; public View onCreateView(@NonNull LayoutInflater inflater,
+        <i>33</i>&nbsp; ViewGroup container, Bundle savedInstanceState) {
+        <b class="nc"><i>34</i>&nbsp; HomeViewModel homeViewModel = new
+            ViewModelProvider(getViewModelStore(),</b>
+        <b class="nc"><i>35</i>&nbsp;
+            getDefaultViewModelProviderFactory()).get(HomeViewModel.class);</b>
+        <b class="nc"><i>36</i>&nbsp; View root = inflater.inflate(R.layout.fragment_home,
+            container, false);</b>
+        <i>37</i>&nbsp;
+        <b class="nc"><i>38</i>&nbsp; TextView googleLinkTextView =
+            root.findViewById(R.id.googlePersonalLink);</b>
+        <b class="nc"><i>39</i>&nbsp;
+            googleLinkTextView.setText(Html.fromHtml(getString(R.string.google_name),
+            Html.FROM_HTML_MODE_LEGACY));</b>
+        <i>40</i>&nbsp;
+        <b class="nc"><i>41</i>&nbsp; updateUserData(root);</b>
+        <i>42</i>&nbsp;
+        <b class="nc"><i>43</i>&nbsp; return root;</b>
+        <i>44</i>&nbsp; }
+        <i>45</i>&nbsp;
+        <i>46</i>&nbsp; @Override
+        <i>47</i>&nbsp; public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        <b class="nc"><i>48</i>&nbsp; super.onActivityCreated(savedInstanceState);</b>
+        <b class="nc"><i>49</i>&nbsp; setHasOptionsMenu(true);</b>
+        <i>50</i>&nbsp; }
+        <i>51</i>&nbsp;
+        <i>52</i>&nbsp; @Override
+        <i>53</i>&nbsp; public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater
+        inflater) {
+        <b class="nc"><i>54</i>&nbsp; super.onCreateOptionsMenu(menu, inflater);</b>
+        <b class="nc"><i>55</i>&nbsp; inflater.inflate(R.menu.home_options_menu, menu);</b>
+        <i>56</i>&nbsp; }
+        <i>57</i>&nbsp;
+        <i>58</i>&nbsp; @Override
+        <i>59</i>&nbsp; public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        <b class="nc"><i>60</i>&nbsp; if (item.getItemId() == R.id.set_work_position) {</b>
+        <b class="nc"><i>61</i>&nbsp; startActivity(new Intent(getContext(),
+            MapActivity.class));</b>
+        <b class="nc"><i>62</i>&nbsp; return true;</b>
+        <i>63</i>&nbsp; }
+        <b class="nc"><i>64</i>&nbsp; if (item.getItemId() == R.id.home_profile) {</b>
+        <b class="nc"><i>65</i>&nbsp; startActivity(new Intent(getContext(),
+            EditUserDataActivity.class));</b>
+        <b class="nc"><i>66</i>&nbsp; return true;</b>
+        <i>67</i>&nbsp; }
+        <b class="nc"><i>68</i>&nbsp; return super.onOptionsItemSelected(item);</b>
+        <i>69</i>&nbsp; }
+        <i>70</i>&nbsp;
+        <i>71</i>&nbsp; private void updateUserData(View root) {
+        <b class="nc"><i>72</i>&nbsp; SharedPreferences sp = getContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE);</b>
+        <i>73</i>&nbsp;
+        <b class="nc"><i>74</i>&nbsp;
+            root.findViewById(R.id.linkedinPersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>75</i>&nbsp; String s = sp.getString(&quot;Linkedin_link&quot;, &quot;Linkedin&quot;);</b>
+        <b class="nc"><i>76</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>77</i>&nbsp; return;
+        <b class="nc"><i>78</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>79</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>80</i>&nbsp; startActivity(intent);</b>
+        <i>81</i>&nbsp; });
+        <b class="nc"><i>82</i>&nbsp;
+            root.findViewById(R.id.websitePersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>83</i>&nbsp; String s = sp.getString(&quot;Website_link&quot;, &quot;Website&quot;);</b>
+        <b class="nc"><i>84</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>85</i>&nbsp; return;
+        <b class="nc"><i>86</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>87</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>88</i>&nbsp; startActivity(intent);</b>
+        <i>89</i>&nbsp; });
+        <b class="nc"><i>90</i>&nbsp;
+            root.findViewById(R.id.googlePersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>91</i>&nbsp; String s = sp.getString(&quot;Google_link&quot;, &quot;Google&quot;);</b>
+        <b class="nc"><i>92</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>93</i>&nbsp; return;
+        <b class="nc"><i>94</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>95</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>96</i>&nbsp; startActivity(intent);</b>
+        <i>97</i>&nbsp; });
+        <b class="nc"><i>98</i>&nbsp;
+            root.findViewById(R.id.facebookPersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>99</i>&nbsp; String s = sp.getString(&quot;Facebook_link&quot;, &quot;Facebook&quot;);</b>
+        <b class="nc"><i>100</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>101</i>&nbsp; return;
+        <b class="nc"><i>102</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>103</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>104</i>&nbsp; startActivity(intent);</b>
+        <i>105</i>&nbsp; });
+        <b class="nc"><i>106</i>&nbsp;
+            root.findViewById(R.id.whatsappPersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>107</i>&nbsp; String s = sp.getString(&quot;Whatsapp_link&quot;, &quot;Whatsapp&quot;);</b>
+        <b class="nc"><i>108</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>109</i>&nbsp; return;
+        <b class="nc"><i>110</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>111</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>112</i>&nbsp; startActivity(intent);</b>
+        <i>113</i>&nbsp; });
+        <b class="nc"><i>114</i>&nbsp;
+            root.findViewById(R.id.telegramPersonalLink).setOnClickListener(view -&gt; {</b>
+        <b class="nc"><i>115</i>&nbsp; String s = sp.getString(&quot;Telegram_link&quot;, &quot;Telegram&quot;);</b>
+        <b class="nc"><i>116</i>&nbsp; if (s == &quot;&quot;)</b>
+        <i>117</i>&nbsp; return;
+        <b class="nc"><i>118</i>&nbsp; Intent intent = new Intent(Intent.ACTION_VIEW);</b>
+        <b class="nc"><i>119</i>&nbsp; intent.setData(Uri.parse(s));</b>
+        <b class="nc"><i>120</i>&nbsp; startActivity(intent);</b>
+        <i>121</i>&nbsp; });
+        <i>122</i>&nbsp;
+        <b class="nc"><i>123</i>&nbsp; ((TextView)
+            root.findViewById(R.id.name)).setText(getContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;First_name&quot;, &quot;First name&quot;));</b>
+        <b class="nc"><i>124</i>&nbsp; ((TextView)
+            root.findViewById(R.id.surname)).setText(getContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Last_name&quot;, &quot;Last name&quot;));</b>
+        <b class="nc"><i>125</i>&nbsp; ((TextView)
+            root.findViewById(R.id.bio)).setText(getContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Bio&quot;, &quot;Bio&quot;));</b>
+        <i>126</i>&nbsp;
+        <b class="nc"><i>127</i>&nbsp; Log.d(&quot;UPDATE INFO USER&quot;, &quot;name edited
+            correctly&quot;);</b>
+        <b class="nc"><i>128</i>&nbsp; Log.d(&quot;UPDATE INFO USER&quot;, &quot;surname edited
+            correctly&quot;);</b>
+        <b class="nc"><i>129</i>&nbsp; Log.d(&quot;UPDATE INFO USER&quot;, &quot;bio edited
+            correctly&quot;);</b>
+        <i>130</i>&nbsp;
+        <b class="nc"><i>131</i>&nbsp; String uri = getContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Uri_profile_pic&quot;, &quot;&quot;);</b>
+        <b class="nc"><i>132</i>&nbsp; if (uri != &quot;&quot;)</b>
+        <b class="nc"><i>133</i>&nbsp; ((ImageView)
+            root.findViewById(R.id.profile_picture)).setImageURI(Uri.parse(uri));</b>
+        <i>134</i>&nbsp; }
+        <i>135</i>&nbsp;
+        <i>136</i>&nbsp;
+        <i>137</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>

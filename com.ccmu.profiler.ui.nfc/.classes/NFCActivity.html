@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: NFCActivity</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler.ui.nfc</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: NFCActivity (com.ccmu.profiler.ui.nfc)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">NFCActivity</td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (1/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+                <span class="absValue">
+    (8/ 16)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    30,7%
+  </span>
+                <span class="absValue">
+    (35/ 114)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler.ui.nfc;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.app.Activity;
+        <i>4</i>&nbsp;import android.app.PendingIntent;
+        <i>5</i>&nbsp;import android.content.ContentValues;
+        <i>6</i>&nbsp;import android.content.Context;
+        <i>7</i>&nbsp;import android.content.Intent;
+        <i>8</i>&nbsp;import android.content.IntentFilter;
+        <i>9</i>&nbsp;import android.nfc.FormatException;
+        <i>10</i>&nbsp;import android.nfc.NdefMessage;
+        <i>11</i>&nbsp;import android.nfc.NdefRecord;
+        <i>12</i>&nbsp;import android.nfc.NfcAdapter;
+        <i>13</i>&nbsp;import android.nfc.Tag;
+        <i>14</i>&nbsp;import android.nfc.tech.Ndef;
+        <i>15</i>&nbsp;import android.os.Bundle;
+        <i>16</i>&nbsp;import android.os.Parcelable;
+        <i>17</i>&nbsp;import android.provider.ContactsContract;
+        <i>18</i>&nbsp;import android.view.View;
+        <i>19</i>&nbsp;import android.widget.Toast;
+        <i>20</i>&nbsp;
+        <i>21</i>&nbsp;import androidx.annotation.Nullable;
+        <i>22</i>&nbsp;
+        <i>23</i>&nbsp;import com.ccmu.profiler.R;
+        <i>24</i>&nbsp;import com.ccmu.profiler.ui.contacts.Contact;
+        <i>25</i>&nbsp;import com.ccmu.profiler.ui.contacts.ContactsFragment;
+        <i>26</i>&nbsp;
+        <i>27</i>&nbsp;import java.io.IOException;
+        <i>28</i>&nbsp;import java.io.UnsupportedEncodingException;
+        <i>29</i>&nbsp;import java.nio.charset.StandardCharsets;
+        <i>30</i>&nbsp;import java.util.ArrayList;
+        <i>31</i>&nbsp;
+        <b class="fc"><i>32</i>&nbsp;public class NFCActivity extends Activity {</b>
+        <i>33</i>&nbsp;
+        <i>34</i>&nbsp; public static final String MODE = &quot;mode&quot;;
+        <i>35</i>&nbsp; public static final String NFC_WRITE_MODE = &quot;write&quot;;
+        <i>36</i>&nbsp; public static final String NFC_READ_MODE = &quot;read&quot;;
+        <i>37</i>&nbsp;
+        <i>38</i>&nbsp; private static final String CONTACT_INFO_DELIMITER_NFC_FORMAT = &quot;~&quot;;
+        <i>39</i>&nbsp;
+        <i>40</i>&nbsp; private NfcAdapter nfcAdapter;
+        <i>41</i>&nbsp; private Tag nfcTag;
+        <i>42</i>&nbsp; private PendingIntent pendingIntent;
+        <i>43</i>&nbsp; private IntentFilter[] writeTagFilters;
+        <i>44</i>&nbsp;
+        <b class="fc"><i>45</i>&nbsp; private static boolean nfcDisabled = false;</b>
+        <i>46</i>&nbsp;
+        <i>47</i>&nbsp; private static final boolean DEBUG = true;
+        <i>48</i>&nbsp;
+        <i>49</i>&nbsp; @Override
+        <i>50</i>&nbsp; protected void onCreate(@Nullable Bundle savedInstanceState) {
+        <b class="nc"><i>51</i>&nbsp; super.onCreate(savedInstanceState);</b>
+        <i>52</i>&nbsp;
+        <b class="nc"><i>53</i>&nbsp; setContentView(R.layout.nfc_activity);</b>
+        <i>54</i>&nbsp;
+        <b class="nc"><i>55</i>&nbsp; if (!isTestMode())</b>
+        <b class="nc"><i>56</i>&nbsp; initializeNFC();</b>
+        <i>57</i>&nbsp;
+        <b class="nc"><i>58</i>&nbsp; }</b>
+        <i>59</i>&nbsp;
+        <i>60</i>&nbsp; private void initializeNFC() {
+        <b class="nc"><i>61</i>&nbsp; nfcAdapter = NfcAdapter.getDefaultAdapter(this);</b>
+        <i>62</i>&nbsp; if (DEBUG || nfcAdapter == null) {
+        <b class="nc"><i>63</i>&nbsp; Toast.makeText(this, &quot;This device doesn&#39;t support NFC&quot;,
+            Toast.LENGTH_LONG).show();</b>
+        <b class="nc"><i>64</i>&nbsp; nfcDisabled = true;</b>
+        <b class="nc"><i>65</i>&nbsp; finish();</b>
+        <i>66</i>&nbsp; }
+        <b class="nc"><i>67</i>&nbsp; }</b>
+        <i>68</i>&nbsp;
+        <i>69</i>&nbsp; public void sendContactNFC(String name, String surname, @Nullable String[]
+        numbers) throws IOException, FormatException {
+        <b class="fc"><i>70</i>&nbsp; StringBuilder formattedMessage = new StringBuilder();</b>
+        <b class="fc"><i>71</i>&nbsp; formattedMessage.append(name)</b>
+        <b class="fc"><i>72</i>&nbsp; .append(CONTACT_INFO_DELIMITER_NFC_FORMAT)</b>
+        <b class="fc"><i>73</i>&nbsp; .append(surname);</b>
+        <b class="fc"><i>74</i>&nbsp; if (numbers != null) {</b>
+        <b class="fc"><i>75</i>&nbsp; for (String s : numbers)</b>
+        <b class="fc"><i>76</i>&nbsp;
+            formattedMessage.append(CONTACT_INFO_DELIMITER_NFC_FORMAT).append(s);</b>
+        <i>77</i>&nbsp; }
+        <i>78</i>&nbsp;
+        <b class="fc"><i>79</i>&nbsp; NdefRecord[] records =
+            {createRecord(formattedMessage.toString())};</b>
+        <b class="fc"><i>80</i>&nbsp; NdefMessage message = new NdefMessage(records);</b>
+        <i>81</i>&nbsp; if (DEBUG || nfcTag == null)
+        <b class="fc"><i>82</i>&nbsp; return;</b>
+        <i>83</i>&nbsp; Ndef ndef = Ndef.get(nfcTag);
+        <i>84</i>&nbsp; ndef.connect();
+        <i>85</i>&nbsp; ndef.writeNdefMessage(message);
+        <i>86</i>&nbsp; ndef.close();
+        <i>87</i>&nbsp; }
+        <i>88</i>&nbsp;
+        <i>89</i>&nbsp; private NdefRecord createRecord(String text) {
+        <b class="fc"><i>90</i>&nbsp; String lang = &quot;en&quot;;</b>
+        <b class="fc"><i>91</i>&nbsp; byte[] textBytes = text.getBytes();</b>
+        <b class="fc"><i>92</i>&nbsp; byte[] langBytes =
+            lang.getBytes(StandardCharsets.US_ASCII);</b>
+        <b class="fc"><i>93</i>&nbsp; int langLength = langBytes.length;</b>
+        <b class="fc"><i>94</i>&nbsp; int textLength = textBytes.length;</b>
+        <b class="fc"><i>95</i>&nbsp; byte[] payload = new byte[1 + langLength + textLength];</b>
+        <i>96</i>&nbsp;
+        <b class="fc"><i>97</i>&nbsp; payload[0] = (byte) langLength;</b>
+        <b class="fc"><i>98</i>&nbsp; System.arraycopy(langBytes, 0, payload, 1, langLength);</b>
+        <b class="fc"><i>99</i>&nbsp; System.arraycopy(textBytes, 0, payload, 1 + langLength,
+            textLength);</b>
+        <i>100</i>&nbsp;
+        <b class="fc"><i>101</i>&nbsp; return new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+            NdefRecord.RTD_TEXT, new byte[0], payload);</b>
+        <i>102</i>&nbsp; }
+        <i>103</i>&nbsp;
+        <i>104</i>&nbsp; public void readFromIntent(Intent intent) {
+        <b class="fc"><i>105</i>&nbsp; String action = intent.getAction();</b>
+        <i>106</i>&nbsp; if (DEBUG || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+        <i>107</i>&nbsp; || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+        <i>108</i>&nbsp; || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+        <b class="fc"><i>109</i>&nbsp; Parcelable[] rawMessages =
+            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);</b>
+        <b class="fc"><i>110</i>&nbsp; NdefMessage[] messages = null;</b>
+        <b class="fc"><i>111</i>&nbsp; if (rawMessages != null) {</b>
+        <b class="nc"><i>112</i>&nbsp; messages = new NdefMessage[rawMessages.length];</b>
+        <b class="nc"><i>113</i>&nbsp; for (int i = 0; i &lt; rawMessages.length; i++)</b>
+        <b class="nc"><i>114</i>&nbsp; messages[i] = (NdefMessage) rawMessages[i];</b>
+        <i>115</i>&nbsp; }
+        <b class="fc"><i>116</i>&nbsp; createNewContact(parseReceivedMessage(messages));</b>
+        <i>117</i>&nbsp; }
+        <b class="fc"><i>118</i>&nbsp; }</b>
+        <i>119</i>&nbsp;
+        <i>120</i>&nbsp; private Contact parseReceivedMessage(@Nullable NdefMessage[] messages) {
+        <b class="fc"><i>121</i>&nbsp; if (messages == null || messages.length == 0) return
+            null;</b>
+        <i>122</i>&nbsp;
+        <b class="nc"><i>123</i>&nbsp; byte[] payload =
+            messages[0].getRecords()[0].getPayload();</b>
+        <b class="nc"><i>124</i>&nbsp; String textEncoding = ((payload[0] &amp; 128) == 0) ? &quot;UTF-8&quot;
+            : &quot;UTF-16&quot;;</b>
+        <b class="nc"><i>125</i>&nbsp; int languageCodeLength = payload[0] &amp; 0063;</b>
+        <b class="nc"><i>126</i>&nbsp; String text = null;</b>
+        <i>127</i>&nbsp; try {
+        <b class="nc"><i>128</i>&nbsp; text = new String(payload, languageCodeLength + 1,
+            payload.length - languageCodeLength - 1, textEncoding);</b>
+        <b class="nc"><i>129</i>&nbsp; } catch (UnsupportedEncodingException e) {</b>
+        <i>130</i>&nbsp; /*Log.e(&quot;UnsupportedEncoding&quot;, e.toString());*/
+        <b class="nc"><i>131</i>&nbsp; }</b>
+        <b class="nc"><i>132</i>&nbsp; if (text == null) return null;</b>
+        <b class="nc"><i>133</i>&nbsp; String[] tokens =
+            text.split(CONTACT_INFO_DELIMITER_NFC_FORMAT);</b>
+        <b class="nc"><i>134</i>&nbsp; String name = tokens[0];</b>
+        <b class="nc"><i>135</i>&nbsp; String surname = tokens[1];</b>
+        <b class="nc"><i>136</i>&nbsp; String[] numbers = new String[tokens.length - 2];</b>
+        <b class="nc"><i>137</i>&nbsp; System.arraycopy(tokens, 2, numbers, 0, tokens.length -
+            2);</b>
+        <b class="nc"><i>138</i>&nbsp; return new Contact(name, surname, numbers);</b>
+        <i>139</i>&nbsp; }
+        <i>140</i>&nbsp;
+        <i>141</i>&nbsp; private void createNewContact(Contact contact) {
+        <b class="fc"><i>142</i>&nbsp; if (contact == null) return;</b>
+        <i>143</i>&nbsp;
+        <b class="nc"><i>144</i>&nbsp; Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);</b>
+        <i>145</i>&nbsp;
+        <b class="nc"><i>146</i>&nbsp; intent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);</b>
+        <b class="nc"><i>147</i>&nbsp; intent.putExtra(ContactsContract.Intents.Insert.NAME,
+            contact.getFullName());</b>
+        <i>148</i>&nbsp;
+        <b class="nc"><i>149</i>&nbsp; ArrayList&lt;ContentValues&gt; data = new ArrayList&lt;&gt;();</b>
+        <i>150</i>&nbsp;
+        <b class="nc"><i>151</i>&nbsp; for (String s : contact.getNumbers()) {</b>
+        <b class="nc"><i>152</i>&nbsp; ContentValues row = new ContentValues();</b>
+        <b class="nc"><i>153</i>&nbsp; row.put(ContactsContract.Data.MIMETYPE,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);</b>
+        <b class="nc"><i>154</i>&nbsp; row.put(ContactsContract.CommonDataKinds.Phone.NUMBER,
+            s);</b>
+        <b class="nc"><i>155</i>&nbsp; row.put(ContactsContract.CommonDataKinds.Phone.TYPE,
+            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);</b>
+        <b class="nc"><i>156</i>&nbsp; data.add(row);</b>
+        <i>157</i>&nbsp; }
+        <i>158</i>&nbsp;
+        <b class="nc"><i>159</i>&nbsp;
+            intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, data);</b>
+        <i>160</i>&nbsp;
+        <b class="nc"><i>161</i>&nbsp; startActivity(intent);</b>
+        <i>162</i>&nbsp; // Since user will decide to add or edit a contact, a result is no longer
+        needed
+        <i>163</i>&nbsp; //startActivityForResult(intent, ADD_CONTACT_REQUEST_CODE);
+        <b class="nc"><i>164</i>&nbsp; }</b>
+        <i>165</i>&nbsp;
+        <i>166</i>&nbsp; @Override
+        <i>167</i>&nbsp; protected void onNewIntent(Intent intent) {
+        <b class="fc"><i>168</i>&nbsp; if
+            (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction()))</b>
+        <b class="nc"><i>169</i>&nbsp; nfcTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);</b>
+        <i>170</i>&nbsp;
+        <b class="fc"><i>171</i>&nbsp; final Context context = this;</b>
+        <i>172</i>&nbsp;
+        <i>173</i>&nbsp; try {
+        <b class="fc"><i>174</i>&nbsp; if (intent.getStringExtra(MODE).equals(NFC_WRITE_MODE)) {</b>
+        <i>175</i>&nbsp; try {
+        <b class="nc"><i>176</i>&nbsp;
+            sendContactNFC(getIntent().getStringExtra(ContactsFragment.CONTACT_NAME_INTENT_ID),</b>
+        <b class="nc"><i>177</i>&nbsp;
+            getIntent().getStringExtra(ContactsFragment.CONTACT_SURNAME_INTENT_ID),</b>
+        <b class="nc"><i>178</i>&nbsp;
+            getIntent().getStringArrayExtra(ContactsFragment.CONTACT_NUMBERS_INTENT_ID));</b>
+        <i>179</i>&nbsp;
+        <i>180</i>&nbsp; /*Toast.makeText(this, &quot;Contact sent&quot;,
+        Toast.LENGTH_SHORT).show();
+        <i>181</i>&nbsp; Log.d(&quot;CONTACT_NFC&quot;, &quot;Contact sent&quot;);*/
+        <b class="nc"><i>182</i>&nbsp; } catch (IOException e) {</b>
+        <i>183</i>&nbsp; /*Toast.makeText(this, R.string.nfc_writing_IO_exception,
+        Toast.LENGTH_LONG)
+        <i>184</i>&nbsp; .show();*/
+        <b class="nc"><i>185</i>&nbsp; } catch (FormatException e) {</b>
+        <i>186</i>&nbsp; /*Toast.makeText(this, R.string.nfc_writing_format_exception,
+        Toast.LENGTH_LONG)
+        <i>187</i>&nbsp; .show();*/
+        <b class="nc"><i>188</i>&nbsp; }</b>
+        <i>189</i>&nbsp; }
+        <b class="nc"><i>190</i>&nbsp; if (intent.getStringExtra(MODE).equals(NFC_READ_MODE)) {</b>
+        <b class="nc"><i>191</i>&nbsp; readFromIntent(getIntent());</b>
+        <b class="nc"><i>192</i>&nbsp; pendingIntent = PendingIntent.getActivity(this, 0, new
+            Intent(</b>
+        <b class="nc"><i>193</i>&nbsp; this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            0);</b>
+        <b class="nc"><i>194</i>&nbsp; IntentFilter tagDetected = new
+            IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);</b>
+        <b class="nc"><i>195</i>&nbsp; tagDetected.addCategory(Intent.CATEGORY_DEFAULT);</b>
+        <b class="nc"><i>196</i>&nbsp; writeTagFilters = new IntentFilter[]{tagDetected};</b>
+        <i>197</i>&nbsp;
+        <b class="nc"><i>198</i>&nbsp; findViewById(R.id.loadingPanel).setVisibility(View.GONE);</b>
+        <i>199</i>&nbsp; /*Toast.makeText(this, &quot;Contact has benn added&quot;,
+        Toast.LENGTH_SHORT).show();
+        <i>200</i>&nbsp; Log.d(&quot;CONTACT_NFC&quot;, &quot;Contact added&quot;);*/
+        <i>201</i>&nbsp; }
+        <b class="fc"><i>202</i>&nbsp; } catch (Exception e) {</b>
+        <i>203</i>&nbsp; /*Log.d(&quot;CONTACT_NFC&quot;, &quot;An error has occurred&quot;);
+        <i>204</i>&nbsp; Toast.makeText(this, &quot;Cancelled&quot;, Toast.LENGTH_SHORT).show();
+        <i>205</i>&nbsp; new AlertDialog.Builder(this)
+        <i>206</i>&nbsp; .setTitle(R.string.title_alert_error_nfc_mode)
+        <i>207</i>&nbsp; .setMessage(R.string.message_alert_error_nfc_mode)
+        <i>208</i>&nbsp; .setIcon(R.drawable.ic_error)
+        <i>209</i>&nbsp; .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+        <i>210</i>&nbsp; @Override
+        <i>211</i>&nbsp; public void onClick(DialogInterface dialog, int which) {
+        <i>212</i>&nbsp; //onBackPressed(); // Sufficient?
+        <i>213</i>&nbsp; startActivity(new Intent(context, HomeFragment.class));
+        <i>214</i>&nbsp; }
+        <i>215</i>&nbsp; })
+        <i>216</i>&nbsp; .show();*/
+        <b class="nc"><i>217</i>&nbsp; }</b>
+        <b class="fc"><i>218</i>&nbsp; }</b>
+        <i>219</i>&nbsp;
+        <i>220</i>&nbsp; @Override
+        <i>221</i>&nbsp; protected void onPause() {
+        <b class="nc"><i>222</i>&nbsp; super.onPause();</b>
+        <b class="nc"><i>223</i>&nbsp; if (!isTestMode())</b>
+        <b class="nc"><i>224</i>&nbsp; writeModeOff();</b>
+        <b class="nc"><i>225</i>&nbsp; }</b>
+        <i>226</i>&nbsp;
+        <i>227</i>&nbsp; @Override
+        <i>228</i>&nbsp; protected void onResume() {
+        <b class="nc"><i>229</i>&nbsp; super.onResume();</b>
+        <b class="nc"><i>230</i>&nbsp; if (!isTestMode())</b>
+        <b class="nc"><i>231</i>&nbsp; writeModeOn();</b>
+        <b class="nc"><i>232</i>&nbsp; }</b>
+        <i>233</i>&nbsp;
+        <i>234</i>&nbsp; private void writeModeOn() {
+        <i>235</i>&nbsp; if (!DEBUG)
+        <i>236</i>&nbsp; nfcAdapter.enableForegroundDispatch(this, pendingIntent, writeTagFilters,
+        null);
+        <b class="nc"><i>237</i>&nbsp; }</b>
+        <i>238</i>&nbsp;
+        <i>239</i>&nbsp; private void writeModeOff() {
+        <i>240</i>&nbsp; if (!DEBUG)
+        <i>241</i>&nbsp; nfcAdapter.disableForegroundDispatch(this);
+        <b class="nc"><i>242</i>&nbsp; }</b>
+        <i>243</i>&nbsp;
+        <i>244</i>&nbsp; public static boolean isNFCDisabled() {
+        <b class="nc"><i>245</i>&nbsp; return DEBUG || nfcDisabled;</b>
+        <i>246</i>&nbsp; }
+        <i>247</i>&nbsp;
+        <i>248</i>&nbsp; private static boolean isTestMode() {
+        <i>249</i>&nbsp; boolean result;
+        <i>250</i>&nbsp; try {
+        <b class="nc"><i>251</i>&nbsp; NFCActivity.class.getClassLoader().loadClass(&quot;com.ccmu.profiler.ExampleInstrumentedTest&quot;);</b>
+        <b class="nc"><i>252</i>&nbsp; result = true;</b>
+        <b class="nc"><i>253</i>&nbsp; } catch (Exception e) {</b>
+        <b class="nc"><i>254</i>&nbsp; result = false;</b>
+        <b class="nc"><i>255</i>&nbsp; }</b>
+        <b class="nc"><i>256</i>&nbsp; if (!result) {</b>
+        <i>257</i>&nbsp; try {
+        <b class="nc"><i>258</i>&nbsp; NFCActivity.class.getClassLoader().loadClass(&quot;com.ccmu.profiler.ExampleUnitTest&quot;);</b>
+        <b class="nc"><i>259</i>&nbsp; result = true;</b>
+        <b class="nc"><i>260</i>&nbsp; } catch (Exception e) {</b>
+        <b class="nc"><i>261</i>&nbsp; result = false;</b>
+        <b class="nc"><i>262</i>&nbsp; }</b>
+        <i>263</i>&nbsp; }
+        <b class="nc"><i>264</i>&nbsp; return result;</b>
+        <i>265</i>&nbsp; }
+        <i>266</i>&nbsp;
+        <i>267</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>

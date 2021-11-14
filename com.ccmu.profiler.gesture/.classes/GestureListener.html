@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: GestureListener</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler.gesture</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: GestureListener (com.ccmu.profiler.gesture)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">GestureListener</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 4)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 20)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler.gesture;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.util.Log;
+        <i>4</i>&nbsp;import android.view.GestureDetector;
+        <i>5</i>&nbsp;import android.view.MotionEvent;
+        <i>6</i>&nbsp;import android.view.View;
+        <i>7</i>&nbsp;
+        <i>8</i>&nbsp;public abstract class GestureListener extends
+        GestureDetector.SimpleOnGestureListener {
+        <i>9</i>&nbsp;
+        <i>10</i>&nbsp; /**
+        <i>11</i>&nbsp; * Threshold used to analyze a potential user-made gesture.
+        <i>12</i>&nbsp; */
+        <i>13</i>&nbsp; private static final int SWIPE_THRESHOLD=100;
+        <i>14</i>&nbsp; /**
+        <i>15</i>&nbsp; * Threshold used to analyze a potential user-made gesture.
+        <i>16</i>&nbsp; */
+        <i>17</i>&nbsp; private static final int VELOCITY_THRESHOLD=100;
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp; private View view;
+        <i>20</i>&nbsp;
+        <i>21</i>&nbsp; public GestureListener() {
+        <b class="nc"><i>22</i>&nbsp; super();</b>
+        <i>23</i>&nbsp; }
+        <i>24</i>&nbsp; public GestureListener(View v) {
+        <b class="nc"><i>25</i>&nbsp; super();</b>
+        <b class="nc"><i>26</i>&nbsp; this.view=v;</b>
+        <i>27</i>&nbsp; }
+        <i>28</i>&nbsp;
+        <i>29</i>&nbsp; /**
+        <i>30</i>&nbsp; * Function that evaluate if a certain movement was executed.
+        <i>31</i>&nbsp; * It will analyze the difference between the start coordinates and the end
+        coordinates of the given events &lt;code&gt;e1&lt;/code&gt; and &lt;code&gt;e2&lt;/code&gt;.
+        <i>32</i>&nbsp; * If that value is greater of the &lt;code&gt;SWIPE_THRESHOLD&lt;/code&gt;
+        constant and the velocity of the action is greater than the &lt;code&gt;VELOCITY_THRESHOLD&lt;/code&gt;
+        <i>33</i>&nbsp; * then, the action detected, will be treated as an intended user&#39;s
+        gesture. For the above reasons, if the gesture is evaluated as voluntary, the function
+        <i>34</i>&nbsp; * return &lt;code&gt;true&lt;/code&gt; (consuming the &lt;code&gt;event&lt;/code&gt;),
+        &lt;code&gt;false&lt;/code&gt; otherwise.
+        <i>35</i>&nbsp; * @param e1 The first down &lt;code&gt;MotionEvent&lt;/code&gt; that started
+        the fling.
+        <i>36</i>&nbsp; * @param e2 The move &lt;code&gt;MotionEvent&lt;/code&gt; that triggered the
+        current onFling.
+        <i>37</i>&nbsp; * @param velocityX The velocity of this fling measured in pixels per second
+        along the x axis.
+        <i>38</i>&nbsp; * @param velocityY The velocity of this fling measured in pixels per second
+        along the y axis.
+        <i>39</i>&nbsp; * @return &lt;code&gt;True&lt;/code&gt; if the gesture is one voluntarily by
+        the user and so the &lt;code&gt;event&lt;/code&gt; is consumed, &lt;code&gt;false&lt;/code&gt;
+        otherwise.
+        <i>40</i>&nbsp; * @see #SWIPE_THRESHOLD
+        <i>41</i>&nbsp; * @see #VELOCITY_THRESHOLD
+        <i>42</i>&nbsp; * @see #onSwipeRight(MotionEvent start)
+        <i>43</i>&nbsp; * @see #onSwipeLeft(MotionEvent start)
+        <i>44</i>&nbsp; * @see #onSwipeUp(MotionEvent start)
+        <i>45</i>&nbsp; * @see #onSwipeDown(MotionEvent start)
+        <i>46</i>&nbsp; */
+        <i>47</i>&nbsp; @Override
+        <i>48</i>&nbsp; public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+        float velocityY) {
+        <b class="nc"><i>49</i>&nbsp; boolean return_value = false;</b>
+        <i>50</i>&nbsp;
+        <b class="nc"><i>51</i>&nbsp; Log.d(&quot;GestureListener&quot;, &quot;Fling detected&quot;);</b>
+        <i>52</i>&nbsp;
+        <b class="nc"><i>53</i>&nbsp; float deltaX = e2.getX() - e1.getX();</b>
+        <b class="nc"><i>54</i>&nbsp; float deltaY = e2.getY() - e1.getY();</b>
+        <i>55</i>&nbsp;
+        <b class="nc"><i>56</i>&nbsp; Log.d(&quot;GestureListener&quot;, &quot;deltaX: [&quot; +
+            deltaX + &quot;] deltaY: [&quot; + deltaY + &quot;]&quot;);</b>
+        <i>57</i>&nbsp;
+        <b class="nc"><i>58</i>&nbsp; if (Math.abs(deltaX) &gt; SWIPE_THRESHOLD &amp;&amp;
+            Math.abs(velocityX) &gt; VELOCITY_THRESHOLD) {</b>
+        <b class="nc"><i>59</i>&nbsp; if (deltaX &gt; 0)</b>
+        <b class="nc"><i>60</i>&nbsp; onSwipeRight(e1);</b>
+        <i>61</i>&nbsp; else
+        <b class="nc"><i>62</i>&nbsp; onSwipeLeft(e1);</b>
+        <b class="nc"><i>63</i>&nbsp; return_value = true;</b>
+        <b class="nc"><i>64</i>&nbsp; } else if (Math.abs(deltaY) &gt; SWIPE_THRESHOLD &amp;&amp;
+            Math.abs(velocityY) &gt; VELOCITY_THRESHOLD) {</b>
+        <b class="nc"><i>65</i>&nbsp; if (deltaY &gt; 0)</b>
+        <b class="nc"><i>66</i>&nbsp; onSwipeDown(e1);</b>
+        <i>67</i>&nbsp; else
+        <b class="nc"><i>68</i>&nbsp; onSwipeUp(e1);</b>
+        <b class="nc"><i>69</i>&nbsp; return_value = true;</b>
+        <i>70</i>&nbsp; }
+        <b class="nc"><i>71</i>&nbsp; return return_value;</b>
+        <i>72</i>&nbsp; }
+        <i>73</i>&nbsp;
+        <i>74</i>&nbsp; public View getView() {
+        <b class="nc"><i>75</i>&nbsp; return view;</b>
+        <i>76</i>&nbsp; }
+        <i>77</i>&nbsp;
+        <i>78</i>&nbsp; /**
+        <i>79</i>&nbsp; * Abstract function that define the detection of a right swipe from the
+        user.
+        <i>80</i>&nbsp; * It&#39;s called when (and if) the corresponding gesture is identified.
+        <i>81</i>&nbsp; *
+        <i>82</i>&nbsp; * @param start The first down &lt;code&gt;MotionEvent&lt;/code&gt; that
+        started the fling.
+        <i>83</i>&nbsp; * @see #onFling(MotionEvent e1, MotionEvent e2, float velocityX, float
+        velocityY)
+        <i>84</i>&nbsp; * @see #onSwipeLeft(MotionEvent start)
+        <i>85</i>&nbsp; * @see #onSwipeUp(MotionEvent start)
+        <i>86</i>&nbsp; * @see #onSwipeDown(MotionEvent start)
+        <i>87</i>&nbsp; */
+        <i>88</i>&nbsp; public abstract void onSwipeRight(MotionEvent start);
+        <i>89</i>&nbsp;
+        <i>90</i>&nbsp; /**
+        <i>91</i>&nbsp; * Abstract function that define the detection of a right swipe from the
+        user.
+        <i>92</i>&nbsp; * It&#39;s called when (and if) the corresponding gesture is identified.
+        <i>93</i>&nbsp; *
+        <i>94</i>&nbsp; * @param start The first down &lt;code&gt;MotionEvent&lt;/code&gt; that
+        started the fling.
+        <i>95</i>&nbsp; * @see #onFling(MotionEvent e1, MotionEvent e2, float velocityX, float
+        velocityY)
+        <i>96</i>&nbsp; * @see #onSwipeRight(MotionEvent start)
+        <i>97</i>&nbsp; * @see #onSwipeUp(MotionEvent start)
+        <i>98</i>&nbsp; * @see #onSwipeDown(MotionEvent start)
+        <i>99</i>&nbsp; */
+        <i>100</i>&nbsp; public abstract void onSwipeLeft(MotionEvent start);
+        <i>101</i>&nbsp;
+        <i>102</i>&nbsp; /**
+        <i>103</i>&nbsp; * Abstract function that define the detection of a right swipe from the
+        user.
+        <i>104</i>&nbsp; * It&#39;s called when (and if) the corresponding gesture is identified.
+        <i>105</i>&nbsp; *
+        <i>106</i>&nbsp; * @param start The first down &lt;code&gt;MotionEvent&lt;/code&gt; that
+        started the fling.
+        <i>107</i>&nbsp; * @see #onFling(MotionEvent e1, MotionEvent e2, float velocityX, float
+        velocityY)
+        <i>108</i>&nbsp; * @see #onSwipeRight(MotionEvent start)
+        <i>109</i>&nbsp; * @see #onSwipeLeft(MotionEvent start)
+        <i>110</i>&nbsp; * @see #onSwipeDown(MotionEvent start)
+        <i>111</i>&nbsp; */
+        <i>112</i>&nbsp; public abstract void onSwipeUp(MotionEvent start);
+        <i>113</i>&nbsp;
+        <i>114</i>&nbsp; /**
+        <i>115</i>&nbsp; * Abstract function that define the detection of a right swipe from the
+        user.
+        <i>116</i>&nbsp; * It&#39;s called when (and if) the corresponding gesture is identified.
+        <i>117</i>&nbsp; *
+        <i>118</i>&nbsp; * @param start The first down &lt;code&gt;MotionEvent&lt;/code&gt; that
+        started the fling.
+        <i>119</i>&nbsp; * @see #onFling(MotionEvent e1, MotionEvent e2, float velocityX, float
+        velocityY)
+        <i>120</i>&nbsp; * @see #onSwipeRight(MotionEvent start)
+        <i>121</i>&nbsp; * @see #onSwipeLeft(MotionEvent start)
+        <i>122</i>&nbsp; * @see #onSwipeUp(MotionEvent start)
+        <i>123</i>&nbsp; */
+        <i>124</i>&nbsp; public abstract void onSwipeDown(MotionEvent start);
+        <i>125</i>&nbsp;
+        <i>126</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>

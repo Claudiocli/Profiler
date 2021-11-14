@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: OnSwipeTouchListener</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler.gesture</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: OnSwipeTouchListener (com.ccmu.profiler.gesture)</h1>
+
+    <table class="coverageStats">
+
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">OnSwipeTouchListener</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 3)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">OnSwipeTouchListener$1</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 25)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><strong>total</strong></td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 4)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 28)
+  </span>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler.gesture;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.content.Intent;
+        <i>4</i>&nbsp;import android.graphics.Rect;
+        <i>5</i>&nbsp;import android.net.Uri;
+        <i>6</i>&nbsp;import android.util.Log;
+        <i>7</i>&nbsp;import android.view.MotionEvent;
+        <i>8</i>&nbsp;import android.view.View;
+        <i>9</i>&nbsp;import android.widget.ListView;
+        <i>10</i>&nbsp;
+        <i>11</i>&nbsp;import androidx.core.view.GestureDetectorCompat;
+        <i>12</i>&nbsp;
+        <i>13</i>&nbsp;import com.ccmu.profiler.BuildConfig;
+        <i>14</i>&nbsp;import com.ccmu.profiler.ui.contacts.ContactModel;
+        <i>15</i>&nbsp;
+        <i>16</i>&nbsp;import java.util.regex.Pattern;
+        <i>17</i>&nbsp;
+        <i>18</i>&nbsp;public class OnSwipeTouchListener implements View.OnTouchListener {
+        <i>19</i>&nbsp;
+        <i>20</i>&nbsp; private final GestureDetectorCompat gestureDetector;
+        <i>21</i>&nbsp;
+        <b class="nc"><i>22</i>&nbsp; public OnSwipeTouchListener(final View view) {</b>
+        <b class="nc"><i>23</i>&nbsp; gestureDetector = new GestureDetectorCompat(view.getContext(),
+            new GestureListener(view) {</b>
+        <i>24</i>&nbsp;
+        <i>25</i>&nbsp; @Override
+        <i>26</i>&nbsp; public void onSwipeRight(MotionEvent start) {
+        <i>27</i>&nbsp; }
+        <i>28</i>&nbsp;
+        <i>29</i>&nbsp; @Override
+        <i>30</i>&nbsp; public void onSwipeLeft(MotionEvent start) {
+        <b class="nc"><i>31</i>&nbsp; Log.d(&quot;GestureDetection&quot;, &quot;Swipe Left detected&quot;);</b>
+        <i>32</i>&nbsp;
+        <b class="nc"><i>33</i>&nbsp; ListView l = (ListView) view;</b>
+        <i>34</i>&nbsp;
+        <b class="nc"><i>35</i>&nbsp; int childCount = l.getChildCount();</b>
+        <b class="nc"><i>36</i>&nbsp; View child, touched = null;</b>
+        <b class="nc"><i>37</i>&nbsp; int[] listViewCoords = new int[2];</b>
+        <b class="nc"><i>38</i>&nbsp; l.getLocationOnScreen(listViewCoords);</b>
+        <b class="nc"><i>39</i>&nbsp; int x = (int) start.getRawX() - listViewCoords[0];</b>
+        <b class="nc"><i>40</i>&nbsp; int y = (int) start.getRawY() - listViewCoords[1];</b>
+        <i>41</i>&nbsp;
+        <b class="nc"><i>42</i>&nbsp; for (int i = 0; i &lt; childCount; i++) {</b>
+        <b class="nc"><i>43</i>&nbsp; child = l.getChildAt(i);</b>
+        <b class="nc"><i>44</i>&nbsp; Rect r = new Rect();</b>
+        <b class="nc"><i>45</i>&nbsp; child.getHitRect(r);</b>
+        <b class="nc"><i>46</i>&nbsp; if (r.contains(x, y)) {</b>
+        <b class="nc"><i>47</i>&nbsp; touched = child;</b>
+        <b class="nc"><i>48</i>&nbsp; break;</b>
+        <i>49</i>&nbsp; }
+        <i>50</i>&nbsp; }
+        <i>51</i>&nbsp;
+        <b class="nc"><i>52</i>&nbsp; ContactModel contactModel = (ContactModel)
+            l.getItemAtPosition(l.getPositionForView(touched));</b>
+        <i>53</i>&nbsp;
+        <b class="nc"><i>54</i>&nbsp; CharSequence number = contactModel.getNumbers()[0];</b>
+        <i>55</i>&nbsp;
+        <i>56</i>&nbsp; // Removing &quot;Number: &quot;
+        <b class="nc"><i>57</i>&nbsp; CharSequence dialNumber =
+            number.subSequence(number.toString().indexOf(&quot;:&quot;) + 2, number.length());</b>
+        <i>58</i>&nbsp;
+        <i>59</i>&nbsp; // Debugging assertion to ensure a valid number to be parsed
+        <b class="nc"><i>60</i>&nbsp; if (BuildConfig.DEBUG &amp;&amp; !(((Pattern.compile(&quot;
+            *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*&quot;)).matcher(dialNumber)).matches())) {</b>
+        <b class="nc"><i>61</i>&nbsp; Log.d(&quot;OnSwipeTouchListener DEBUG&quot;,
+            dialNumber.toString());</b>
+        <b class="nc"><i>62</i>&nbsp; Log.d(&quot;OnSwipeTouchListener DEBUG - REGEX&quot;, &quot;Regex
+            result is: &quot; + (((Pattern.compile(&quot; *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*&quot;)).matcher(dialNumber)).matches()));</b>
+        <b class="nc"><i>63</i>&nbsp; throw new AssertionError(&quot;Assertion failed&quot;);</b>
+        <i>64</i>&nbsp; }
+        <i>65</i>&nbsp;
+        <b class="nc"><i>66</i>&nbsp; Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(&quot;tel:&quot;
+            + dialNumber));</b>
+        <b class="nc"><i>67</i>&nbsp; view.getContext().startActivity(intent);</b>
+        <i>68</i>&nbsp; }
+        <i>69</i>&nbsp;
+        <i>70</i>&nbsp; @Override
+        <i>71</i>&nbsp; public void onSwipeUp(MotionEvent start) {
+        <i>72</i>&nbsp; }
+        <i>73</i>&nbsp;
+        <i>74</i>&nbsp; @Override
+        <i>75</i>&nbsp; public void onSwipeDown(MotionEvent start) {
+        <i>76</i>&nbsp; }
+        <i>77</i>&nbsp; });
+        <i>78</i>&nbsp; }
+        <i>79</i>&nbsp;
+        <i>80</i>&nbsp; /**
+        <i>81</i>&nbsp; * Called when a touch event is dispatched to a view. This allows listeners
+        to
+        <i>82</i>&nbsp; * get a chance to respond before the target view.
+        <i>83</i>&nbsp; *
+        <i>84</i>&nbsp; * @param v The view the touch event has been dispatched to.
+        <i>85</i>&nbsp; * @param event The MotionEvent object containing full information about
+        <i>86</i>&nbsp; * the event.
+        <i>87</i>&nbsp; * @return True if the listener has consumed the event, false otherwise.
+        <i>88</i>&nbsp; */
+        <i>89</i>&nbsp; @Override
+        <i>90</i>&nbsp; public boolean onTouch(View v, MotionEvent event) {
+        <b class="nc"><i>91</i>&nbsp; return gestureDetector.onTouchEvent(event);</b>
+        <i>92</i>&nbsp; }
+        <i>93</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>

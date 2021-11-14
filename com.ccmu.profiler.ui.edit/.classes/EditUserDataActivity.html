@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: EditUserDataActivity</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler.ui.edit</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: EditUserDataActivity (com.ccmu.profiler.ui.edit)</h1>
+
+    <table class="coverageStats">
+
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">EditUserDataActivity</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 7)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 44)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">EditUserDataActivity$1</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 4)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">EditUserDataActivity$2</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 4)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">EditUserDataActivity$3</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 4)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">EditUserDataActivity$4</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 2)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 21)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><strong>total</strong></td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 15)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 77)
+  </span>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler.ui.edit;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.annotation.SuppressLint;
+        <i>4</i>&nbsp;import android.app.Activity;
+        <i>5</i>&nbsp;import android.app.AlertDialog;
+        <i>6</i>&nbsp;import android.content.Context;
+        <i>7</i>&nbsp;import android.content.Intent;
+        <i>8</i>&nbsp;import android.content.SharedPreferences;
+        <i>9</i>&nbsp;import android.net.Uri;
+        <i>10</i>&nbsp;import android.os.Bundle;
+        <i>11</i>&nbsp;import android.provider.MediaStore;
+        <i>12</i>&nbsp;import android.text.Editable;
+        <i>13</i>&nbsp;import android.text.TextWatcher;
+        <i>14</i>&nbsp;import android.util.Log;
+        <i>15</i>&nbsp;import android.widget.EditText;
+        <i>16</i>&nbsp;import android.widget.ImageView;
+        <i>17</i>&nbsp;import android.widget.TextView;
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp;import androidx.annotation.Nullable;
+        <i>20</i>&nbsp;
+        <i>21</i>&nbsp;import com.ccmu.profiler.R;
+        <i>22</i>&nbsp;
+        <i>23</i>&nbsp;import java.util.Objects;
+        <i>24</i>&nbsp;
+        <b class="nc"><i>25</i>&nbsp;public class EditUserDataActivity extends Activity {</b>
+        <i>26</i>&nbsp;
+        <i>27</i>&nbsp; public static final String DATA_NAME_VALUE_DELIMITER = &quot;~&quot;;
+        <i>28</i>&nbsp;
+        <i>29</i>&nbsp; public static final String EDIT_MODE_INTENT = &quot;edit_mode_intent&quot;;
+        <i>30</i>&nbsp; public static final String REGISTER_USER_MODE = &quot;register_user_mode&quot;;
+        <i>31</i>&nbsp; public static final String EDIT_USER_MODE = &quot;edit_user_mode&quot;;
+        <i>32</i>&nbsp;
+        <i>33</i>&nbsp; public static final int REGISTER_USER_REQUEST_CODE = 5;
+        <i>34</i>&nbsp; private static final int PICK_IMAGE_REQUEST_CODE = 6;
+        <i>35</i>&nbsp;
+        <i>36</i>&nbsp; @Override
+        <i>37</i>&nbsp; protected void onCreate(@Nullable Bundle savedInstanceState) {
+        <b class="nc"><i>38</i>&nbsp; super.onCreate(savedInstanceState);</b>
+        <i>39</i>&nbsp;
+        <b class="nc"><i>40</i>&nbsp; setContentView(R.layout.edit_user_data_activity);</b>
+        <i>41</i>&nbsp;
+        <b class="nc"><i>42</i>&nbsp; updateEditingFieldsData();</b>
+        <i>43</i>&nbsp;
+        <b class="nc"><i>44</i>&nbsp; if (getIntent() != null &amp;&amp;
+            Objects.equals(getIntent().getStringExtra(EDIT_MODE_INTENT), REGISTER_USER_MODE))</b>
+        <b class="nc"><i>45</i>&nbsp; displayRegisterInfo();</b>
+        <i>46</i>&nbsp;
+        <b class="nc"><i>47</i>&nbsp; commitChangesToProfile();</b>
+        <i>48</i>&nbsp; }
+        <i>49</i>&nbsp;
+        <i>50</i>&nbsp; private void updateEditingFieldsData() {
+        <b class="nc"><i>51</i>&nbsp; ((TextView)
+            findViewById(R.id.linkedin_edit_link)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Linkedin_link&quot;, &quot;Linkedin&quot;));</b>
+        <b class="nc"><i>52</i>&nbsp; ((TextView)
+            findViewById(R.id.website_edit_link)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Website_link&quot;, &quot;Website&quot;));</b>
+        <b class="nc"><i>53</i>&nbsp; ((TextView)
+            findViewById(R.id.google_edit_link)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Google_link&quot;, &quot;Google&quot;));</b>
+        <b class="nc"><i>54</i>&nbsp; ((TextView)
+            findViewById(R.id.facebook_link_edit)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Facebook_link&quot;, &quot;Facebook&quot;));</b>
+        <b class="nc"><i>55</i>&nbsp; ((TextView)
+            findViewById(R.id.whatsapp_edit_link)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Whatsapp_link&quot;, &quot;Whatsapp&quot;));</b>
+        <b class="nc"><i>56</i>&nbsp; ((TextView)
+            findViewById(R.id.telegram_edit_link)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Telegram_link&quot;, &quot;Telegram&quot;));</b>
+        <i>57</i>&nbsp;
+        <b class="nc"><i>58</i>&nbsp; ((EditText)
+            findViewById(R.id.first_name_edit)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;First_name&quot;, &quot;First Name&quot;));</b>
+        <b class="nc"><i>59</i>&nbsp; ((EditText)
+            findViewById(R.id.last_name_edit)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Last_name&quot;, &quot;Last name&quot;));</b>
+        <b class="nc"><i>60</i>&nbsp; ((EditText)
+            findViewById(R.id.bio_and_info_edit)).setText(getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Bio&quot;, &quot;Bio&quot;));</b>
+        <i>61</i>&nbsp;
+        <b class="nc"><i>62</i>&nbsp; String uri = getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).getString(&quot;Uri_profile_pic&quot;, &quot;&quot;);</b>
+        <b class="nc"><i>63</i>&nbsp; if (uri != &quot;&quot;)</b>
+        <b class="nc"><i>64</i>&nbsp; ((ImageView)
+            findViewById(R.id.image_edit)).setImageURI(Uri.parse(uri));</b>
+        <i>65</i>&nbsp;
+        <i>66</i>&nbsp; }
+        <i>67</i>&nbsp;
+        <i>68</i>&nbsp; private void displayRegisterInfo() {
+        <b class="nc"><i>69</i>&nbsp; new AlertDialog.Builder(this)</b>
+        <b class="nc"><i>70</i>&nbsp; .setTitle(R.string.register_user_title)</b>
+        <b class="nc"><i>71</i>&nbsp; .setMessage(R.string.register_user_message)</b>
+        <b class="nc"><i>72</i>&nbsp; .setIcon(R.drawable.ic_register_user)</b>
+        <b class="nc"><i>73</i>&nbsp; .show();</b>
+        <i>74</i>&nbsp; }
+        <i>75</i>&nbsp;
+        <i>76</i>&nbsp; @SuppressLint(&quot;IntentReset&quot;)
+        <i>77</i>&nbsp; private void commitChangesToProfile() {
+        <b class="nc"><i>78</i>&nbsp; ((TextView)
+            findViewById(R.id.first_name_edit)).addTextChangedListener(new TextWatcher() {</b>
+        <i>79</i>&nbsp; @Override
+        <i>80</i>&nbsp; public void beforeTextChanged(CharSequence s, int start, int count, int
+        after) {
+        <i>81</i>&nbsp; }
+        <i>82</i>&nbsp;
+        <i>83</i>&nbsp; @Override
+        <i>84</i>&nbsp; public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+        <i>85</i>&nbsp; }
+        <i>86</i>&nbsp;
+        <i>87</i>&nbsp; @Override
+        <i>88</i>&nbsp; public void afterTextChanged(Editable s) {
+        <b class="nc"><i>89</i>&nbsp; SharedPreferences.Editor editor =
+            getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).edit();</b>
+        <b class="nc"><i>90</i>&nbsp; editor.putString(&quot;First_name&quot;, s.toString());</b>
+        <b class="nc"><i>91</i>&nbsp; editor.apply();</b>
+        <i>92</i>&nbsp; }
+        <i>93</i>&nbsp; });
+        <b class="nc"><i>94</i>&nbsp; ((TextView)
+            findViewById(R.id.last_name_edit)).addTextChangedListener(new TextWatcher() {</b>
+        <i>95</i>&nbsp; @Override
+        <i>96</i>&nbsp; public void beforeTextChanged(CharSequence s, int start, int count, int
+        after) {
+        <i>97</i>&nbsp; }
+        <i>98</i>&nbsp;
+        <i>99</i>&nbsp; @Override
+        <i>100</i>&nbsp; public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+        <i>101</i>&nbsp; }
+        <i>102</i>&nbsp;
+        <i>103</i>&nbsp; @Override
+        <i>104</i>&nbsp; public void afterTextChanged(Editable s) {
+        <b class="nc"><i>105</i>&nbsp; SharedPreferences.Editor editor =
+            getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).edit();</b>
+        <b class="nc"><i>106</i>&nbsp; editor.putString(&quot;Last_name&quot;, s.toString());</b>
+        <b class="nc"><i>107</i>&nbsp; editor.apply();</b>
+        <i>108</i>&nbsp; }
+        <i>109</i>&nbsp; });
+        <b class="nc"><i>110</i>&nbsp; ((TextView)
+            findViewById(R.id.bio_and_info_edit)).addTextChangedListener(new TextWatcher() {</b>
+        <i>111</i>&nbsp; @Override
+        <i>112</i>&nbsp; public void beforeTextChanged(CharSequence s, int start, int count, int
+        after) {
+        <i>113</i>&nbsp; }
+        <i>114</i>&nbsp;
+        <i>115</i>&nbsp; @Override
+        <i>116</i>&nbsp; public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+        <i>117</i>&nbsp; }
+        <i>118</i>&nbsp;
+        <i>119</i>&nbsp; @Override
+        <i>120</i>&nbsp; public void afterTextChanged(Editable s) {
+        <b class="nc"><i>121</i>&nbsp; SharedPreferences.Editor editor =
+            getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).edit();</b>
+        <b class="nc"><i>122</i>&nbsp; editor.putString(&quot;Bio&quot;, s.toString());</b>
+        <b class="nc"><i>123</i>&nbsp; editor.apply();</b>
+        <i>124</i>&nbsp; }
+        <i>125</i>&nbsp; });
+        <i>126</i>&nbsp;
+        <b class="nc"><i>127</i>&nbsp; findViewById(R.id.image_edit).setOnClickListener(v -&gt;
+            {</b>
+        <b class="nc"><i>128</i>&nbsp; Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);</b>
+        <b class="nc"><i>129</i>&nbsp; getIntent.setType(&quot;image/*&quot;);</b>
+        <b class="nc"><i>130</i>&nbsp; Intent pickIntent = new Intent(Intent.ACTION_PICK,</b>
+        <i>131</i>&nbsp; MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        <b class="nc"><i>132</i>&nbsp; pickIntent.setType(&quot;image/*&quot;);</b>
+        <i>133</i>&nbsp;
+        <b class="nc"><i>134</i>&nbsp; Intent chooserIntent = Intent.createChooser(getIntent, &quot;Select
+            an Image&quot;);</b>
+        <b class="nc"><i>135</i>&nbsp; chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new
+            Intent[]{pickIntent});</b>
+        <i>136</i>&nbsp;
+        <b class="nc"><i>137</i>&nbsp; startActivityForResult(chooserIntent,
+            PICK_IMAGE_REQUEST_CODE);</b>
+        <i>138</i>&nbsp; });
+        <i>139</i>&nbsp;
+        <b class="nc"><i>140</i>&nbsp; int[] linkViewsIds = new int[]{</b>
+        <i>141</i>&nbsp; R.id.linkedin_edit_link, R.id.google_edit_link,
+        <i>142</i>&nbsp; R.id.website_edit_link, R.id.facebook_link_edit,
+        <i>143</i>&nbsp; R.id.whatsapp_edit_link, R.id.telegram_edit_link
+        <i>144</i>&nbsp; };
+        <i>145</i>&nbsp;
+        <b class="nc"><i>146</i>&nbsp; for (int id : linkViewsIds) {</b>
+        <b class="nc"><i>147</i>&nbsp; ((TextView) findViewById(id)).addTextChangedListener(new
+            TextWatcher() {</b>
+        <i>148</i>&nbsp; @Override
+        <i>149</i>&nbsp; public void beforeTextChanged(CharSequence s, int start, int count, int
+        after) {
+        <i>150</i>&nbsp; }
+        <i>151</i>&nbsp;
+        <i>152</i>&nbsp; @Override
+        <i>153</i>&nbsp; public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+        <i>154</i>&nbsp; }
+        <i>155</i>&nbsp;
+        <i>156</i>&nbsp; @SuppressLint(&quot;NonConstantResourceId&quot;)
+        <i>157</i>&nbsp; @Override
+        <i>158</i>&nbsp; public void afterTextChanged(Editable s) {
+        <i>159</i>&nbsp; //if (!Pattern.matches(&quot;/^[a-z](?:[-a-z0-9\\+\\.])*:(?:\\/\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:])*@)?(?:\\[(?:(?:(?:[0-9a-f]{1,4}:){6}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|::(?:[0-9a-f]{1,4}:){5}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|v[0-9a-f]+\\.[-a-z0-9\\._~!\\$&amp;&#39;\\(\\)\\*\\+,;=:]+)\\]|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}|(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=])*)(?::[0-9]*)?(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@]))*)*|\\/(?:(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@]))+)(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@]))*)*)?|(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@]))+)(?:\\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@]))*)*|(?!(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@])))(?:\\?(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@])|[\\x{E000}-\\x{F8FF}\\x{F0000}-\\x{FFFFD}\\x{100000}-\\x{10FFFD}\\/\\?])*)?(?:\\#(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\\._~\\x{A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}\\x{10000}-\\x{1FFFD}\\x{20000}-\\x{2FFFD}\\x{30000}-\\x{3FFFD}\\x{40000}-\\x{4FFFD}\\x{50000}-\\x{5FFFD}\\x{60000}-\\x{6FFFD}\\x{70000}-\\x{7FFFD}\\x{80000}-\\x{8FFFD}\\x{90000}-\\x{9FFFD}\\x{A0000}-\\x{AFFFD}\\x{B0000}-\\x{BFFFD}\\x{C0000}-\\x{CFFFD}\\x{D0000}-\\x{DFFFD}\\x{E1000}-\\x{EFFFD}!\\$&amp;&#39;\\(\\)\\*\\+,;=:@])|[\\/\\?])*)?$/i\n&quot;,
+        s))
+        <i>160</i>&nbsp; // return;
+        <i>161</i>&nbsp; //Log.d(&quot;EditUserLinks&quot;,&quot;valid url&quot;);
+        <b class="nc"><i>162</i>&nbsp; SharedPreferences sp =
+            getApplicationContext().getSharedPreferences(&quot;SP&quot;, Context.MODE_PRIVATE);</b>
+        <b class="nc"><i>163</i>&nbsp; SharedPreferences.Editor editor = sp.edit();</b>
+        <b class="nc"><i>164</i>&nbsp; switch (id) {</b>
+        <i>165</i>&nbsp; case R.id.linkedin_edit_link:
+        <b class="nc"><i>166</i>&nbsp; editor.putString(&quot;Linkedin_link&quot;,
+            s.toString());</b>
+        <b class="nc"><i>167</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>168</i>&nbsp; break;</b>
+        <i>169</i>&nbsp; case R.id.website_edit_link:
+        <b class="nc"><i>170</i>&nbsp; editor.putString(&quot;Website_link&quot;, s.toString());</b>
+        <b class="nc"><i>171</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>172</i>&nbsp; break;</b>
+        <i>173</i>&nbsp; case R.id.google_edit_link:
+        <b class="nc"><i>174</i>&nbsp; editor.putString(&quot;Google_link&quot;, s.toString());</b>
+        <b class="nc"><i>175</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>176</i>&nbsp; break;</b>
+        <i>177</i>&nbsp; case R.id.facebook_link_edit:
+        <b class="nc"><i>178</i>&nbsp; editor.putString(&quot;Facebook_link&quot;,
+            s.toString());</b>
+        <b class="nc"><i>179</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>180</i>&nbsp; break;</b>
+        <i>181</i>&nbsp; case R.id.whatsapp_edit_link:
+        <b class="nc"><i>182</i>&nbsp; editor.putString(&quot;Whatsapp_link&quot;,
+            s.toString());</b>
+        <b class="nc"><i>183</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>184</i>&nbsp; break;</b>
+        <i>185</i>&nbsp; case R.id.telegram_edit_link:
+        <b class="nc"><i>186</i>&nbsp; editor.putString(&quot;Telegram_link&quot;,
+            s.toString());</b>
+        <b class="nc"><i>187</i>&nbsp; editor.apply();</b>
+        <i>188</i>&nbsp; break;
+        <i>189</i>&nbsp; }
+        <i>190</i>&nbsp; }
+        <i>191</i>&nbsp; });
+        <i>192</i>&nbsp; }
+        <i>193</i>&nbsp;
+        <i>194</i>&nbsp; }
+        <i>195</i>&nbsp;
+        <i>196</i>&nbsp; @Override
+        <i>197</i>&nbsp; protected void onActivityResult(int requestCode, int resultCode, Intent
+        data) {
+        <b class="nc"><i>198</i>&nbsp; if (requestCode == PICK_IMAGE_REQUEST_CODE &amp;&amp;
+            resultCode == Activity.RESULT_OK) {</b>
+        <b class="nc"><i>199</i>&nbsp; SharedPreferences.Editor editor =
+            getApplicationContext().getSharedPreferences(&quot;SP&quot;,
+            Context.MODE_PRIVATE).edit();</b>
+        <b class="nc"><i>200</i>&nbsp; editor.putString(&quot;Uri_profile_pic&quot;,
+            data.getData().toString());</b>
+        <b class="nc"><i>201</i>&nbsp; editor.apply();</b>
+        <b class="nc"><i>202</i>&nbsp; ((ImageView)
+            findViewById(R.id.image_edit)).setImageURI(data.getData());</b>
+        <b class="nc"><i>203</i>&nbsp; Log.d(&quot;EditUserDataActivity&quot;, &quot;CHANGED IMAGE
+            ON EDIT MENU&quot;);</b>
+        <i>204</i>&nbsp; }
+        <i>205</i>&nbsp; }
+        <i>206</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>

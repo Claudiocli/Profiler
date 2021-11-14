@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: MainActivity</title>
+    <style type="text/css">
+    @import "../../.css/coverage.css";
+
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">com.ccmu.profiler</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: MainActivity (com.ccmu.profiler)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">MainActivity</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 5)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 19)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package com.ccmu.profiler;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import android.content.Intent;
+        <i>4</i>&nbsp;import android.net.Uri;
+        <i>5</i>&nbsp;import android.os.Bundle;
+        <i>6</i>&nbsp;import android.util.Log;
+        <i>7</i>&nbsp;import android.widget.ImageView;
+        <i>8</i>&nbsp;
+        <i>9</i>&nbsp;import androidx.appcompat.app.AppCompatActivity;
+        <i>10</i>&nbsp;import androidx.navigation.NavController;
+        <i>11</i>&nbsp;import androidx.navigation.Navigation;
+        <i>12</i>&nbsp;import androidx.navigation.ui.AppBarConfiguration;
+        <i>13</i>&nbsp;import androidx.navigation.ui.NavigationUI;
+        <i>14</i>&nbsp;
+        <i>15</i>&nbsp;import com.ccmu.profiler.ui.edit.EditUserDataActivity;
+        <i>16</i>&nbsp;import com.ccmu.profiler.ui.home.HomeFragment;
+        <i>17</i>&nbsp;import com.google.android.material.bottomnavigation.BottomNavigationView;
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp;import java.io.File;
+        <i>20</i>&nbsp;
+        <b class="nc"><i>21</i>&nbsp;public class MainActivity extends AppCompatActivity {</b>
+        <i>22</i>&nbsp;
+        <i>23</i>&nbsp; public static final String USER_DATA_FILE_NAME = &quot;user.txt&quot;;
+        <i>24</i>&nbsp; public static final String USER_DATA_IMAGE_FILE_NAME = &quot;user_image.txt&quot;;
+        <i>25</i>&nbsp;
+        <i>26</i>&nbsp; @Override
+        <i>27</i>&nbsp; protected void onCreate(Bundle savedInstanceState) {
+        <b class="nc"><i>28</i>&nbsp; super.onCreate(savedInstanceState);</b>
+        <i>29</i>&nbsp;
+        <b class="nc"><i>30</i>&nbsp; if (!doesUserDataExists())</b>
+        <b class="nc"><i>31</i>&nbsp; registerUser();</b>
+        <i>32</i>&nbsp;
+        <b class="nc"><i>33</i>&nbsp; setContentView(R.layout.activity_main);</b>
+        <i>34</i>&nbsp;
+        <b class="nc"><i>35</i>&nbsp; BottomNavigationView navView =
+            findViewById(R.id.nav_view);</b>
+        <i>36</i>&nbsp; // Passing each menu ID as a set of Ids because each
+        <i>37</i>&nbsp; // menu should be considered as top level destinations.
+        <b class="nc"><i>38</i>&nbsp; AppBarConfiguration appBarConfiguration = new
+            AppBarConfiguration.Builder(</b>
+        <i>39</i>&nbsp; R.id.navigation_home, R.id.navigation_organization,
+        R.id.navigation_contacts)
+        <b class="nc"><i>40</i>&nbsp; .build();</b>
+        <b class="nc"><i>41</i>&nbsp; NavController navController =
+            Navigation.findNavController(this, R.id.nav_host_fragment);</b>
+        <b class="nc"><i>42</i>&nbsp; NavigationUI.setupActionBarWithNavController(this,
+            navController, appBarConfiguration);</b>
+        <b class="nc"><i>43</i>&nbsp; NavigationUI.setupWithNavController(navView,
+            navController);</b>
+        <i>44</i>&nbsp;
+        <i>45</i>&nbsp; }
+        <i>46</i>&nbsp;
+        <i>47</i>&nbsp; private boolean doesUserDataExists() {
+        <b class="nc"><i>48</i>&nbsp; return new File(getFilesDir().getPath() +
+            USER_DATA_FILE_NAME).exists();</b>
+        <i>49</i>&nbsp; }
+        <i>50</i>&nbsp;
+        <i>51</i>&nbsp; private void registerUser() {
+        <b class="nc"><i>52</i>&nbsp; startActivityForResult(new Intent(this,
+            EditUserDataActivity.class)</b>
+        <b class="nc"><i>53</i>&nbsp; .putExtra(EditUserDataActivity.EDIT_MODE_INTENT,
+            EditUserDataActivity.REGISTER_USER_MODE),</b>
+        <i>54</i>&nbsp; EditUserDataActivity.REGISTER_USER_REQUEST_CODE);
+        <i>55</i>&nbsp; }
+        <i>56</i>&nbsp;
+        <i>57</i>&nbsp; @Override
+        <i>58</i>&nbsp; protected void onNewIntent(Intent intent) {
+        <b class="nc"><i>59</i>&nbsp; String uri =
+            intent.getStringExtra(HomeFragment.SET_URI_PROFILE_IMAGE_ID);</b>
+        <b class="nc"><i>60</i>&nbsp; if (uri != null) {</b>
+        <b class="nc"><i>61</i>&nbsp; ((ImageView)
+            findViewById(R.id.profile_picture)).setImageURI(Uri.parse(uri));</b>
+        <b class="nc"><i>62</i>&nbsp; Log.d(&quot;MainActivity - OnNewIntent&quot;, &quot;SWAP IMAGE
+            COMPLETED&quot;);</b>
+        <i>63</i>&nbsp; }
+        <b class="nc"><i>64</i>&nbsp; super.onNewIntent(intent);</b>
+        <i>65</i>&nbsp; }
+        <i>66</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2021-10-31 18:39</div>
+</div>
+</body>
+</html>
