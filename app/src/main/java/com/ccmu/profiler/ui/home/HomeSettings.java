@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
@@ -27,7 +28,19 @@ public class HomeSettings extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.home_settings_ui);
-        // TODO: check status of button for the service
+
+        checkButtonStatus();
+    }
+
+    private void checkButtonStatus() {
+        SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
+        Button button = findViewById(R.id.dndmaw_button);
+
+        if (sp.getBoolean(MapService.STATUS_SHARED_KEY, false)) {
+            button.setBackgroundColor(Color.GREEN);
+        } else {
+            button.setBackgroundColor(Color.RED);
+        }
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -40,7 +53,6 @@ public class HomeSettings extends Activity {
         Intent intent = new Intent(view.getContext(), MapService.class);
 
         if (!currentStatus) {
-            // TODO: Only start the service
             alarmManager.setRepeating(
                     AlarmManager.RTC,
                     Calendar.getInstance().getTimeInMillis(),
@@ -56,7 +68,6 @@ public class HomeSettings extends Activity {
             view.setBackgroundColor(Color.GREEN);
             Log.d(getClass().getSimpleName(), "started repeating action");
         } else {
-            // TODO: cancel the running service
             alarmManager.cancel(PendingIntent.getBroadcast(
                     view.getContext(),
                     MapService.REQUEST_CODE,

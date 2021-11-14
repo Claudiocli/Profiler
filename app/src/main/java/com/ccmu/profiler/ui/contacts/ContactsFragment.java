@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,11 +24,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -199,7 +202,45 @@ public class ContactsFragment extends Fragment {
             });
         });
 
+        registerForContextMenu(contactsList);
+        registerForContextMenu(favouriteContactsList);
+
         return root;
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(R.string.delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        ListView lv = (ListView) acmi.targetView.getParent();
+
+        if (item.getTitle().equals(getString(R.string.delete))) {
+            ContactModel contact = (ContactModel) lv.getItemAtPosition(acmi.position);
+
+            ContentResolver cr = requireContext().getContentResolver();
+            Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(contact.getNumbers()[0]));
+            @SuppressLint("Recycle") Cursor cursor = cr.query(contactUri, null, null, null, null);
+
+            while (cursor.moveToNext()) {
+                try {
+                    if (!cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)).equals(contact.getId()))
+                        continue;
+                    String lookupKey = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+                    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, lookupKey);
+
+                    cr.delete(uri, null, null);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "An error has occurred", Toast.LENGTH_SHORT).show();
+                }
+            }
+            doShowContacts();
+        }
+
+        return super.onContextItemSelected(item);
     }
 
     @Override

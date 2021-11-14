@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
         SharedPreferences sp = getContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
 
         root.findViewById(R.id.linkedinPersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Linkedin_link", "Linkedin");
+            String s = sp.getString("Linkedin_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         root.findViewById(R.id.websitePersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Website_link", "Website");
+            String s = sp.getString("Website_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         root.findViewById(R.id.googlePersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Google_link", "Google");
+            String s = sp.getString("Google_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         root.findViewById(R.id.facebookPersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Facebook_link", "Facebook");
+            String s = sp.getString("Facebook_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -114,19 +114,19 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         root.findViewById(R.id.whatsappPersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Whatsapp_link", "Whatsapp");
+            String s = sp.getString("Whatsapp_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(s));
+            intent.setData(Uri.parse("https://api.whatsapp.com/send?phone=" + s));
             startActivity(intent);
         });
         root.findViewById(R.id.telegramPersonalLink).setOnClickListener(view -> {
-            String s = sp.getString("Telegram_link", "Telegram");
+            String s = sp.getString("Telegram_link", "");
             if (s == "")
                 return;
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(s));
+            intent.setData(Uri.parse("https://t.me/" + s));
             startActivity(intent);
         });
 
