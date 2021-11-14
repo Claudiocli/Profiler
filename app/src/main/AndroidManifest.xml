@@ -71,6 +71,7 @@
         <activity android:name=".ui.home.HomeSettings" />
 
         <service android:name=".time.DNDService" />
+        <service android:name=".map.MapService" />
     </application>
 
 </manifest>

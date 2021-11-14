@@ -38,7 +38,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public static final String HOME_LOCATION_FORMAT = "HOME_LOCATION";
     public static final String WORK_LOCATION_FORMAT = "WORK_LOCATION";
 
-    private static final int LOCATION_REQUEST_CODE = 20;
+    public static final int LOCATION_REQUEST_CODE = 20;
+
     private Marker lastMarker;
     private LocationManager locationManager;
 

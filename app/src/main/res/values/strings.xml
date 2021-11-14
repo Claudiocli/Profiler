@@ -74,5 +74,6 @@
     <string name="dndmaw_text_button">Enable Do Not Disturb Me At Work mode</string>
 
     <string name="notification_permissions_needed">Notification permissions are needed to enable/disable do not disturb mode</string>
+    <string name="location_permissions_error">You need location permissions to use this feature</string>
 
 </resources>

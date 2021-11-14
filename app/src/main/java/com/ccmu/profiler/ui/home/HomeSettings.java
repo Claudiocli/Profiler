@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ public class HomeSettings extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.home_settings_ui);
+        // TODO: check status of button for the service
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -38,26 +40,36 @@ public class HomeSettings extends Activity {
         Intent intent = new Intent(view.getContext(), MapService.class);
 
         if (!currentStatus) {
+            // TODO: Only start the service
             alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP,
+                    AlarmManager.RTC,
                     Calendar.getInstance().getTimeInMillis(),
                     MapService.UPDATE_INTERVAL,
-                    PendingIntent.getService(
+                    PendingIntent.getBroadcast(
                             view.getContext(),
-                            0,
+                            MapService.REQUEST_CODE,
                             intent,
-                            PendingIntent.FLAG_ONE_SHOT)
+                            PendingIntent.FLAG_CANCEL_CURRENT
+                    )
             );
+            startService(intent);
             view.setBackgroundColor(Color.GREEN);
+            Log.d(getClass().getSimpleName(), "started repeating action");
         } else {
-            alarmManager.cancel(PendingIntent.getService(
+            // TODO: cancel the running service
+            alarmManager.cancel(PendingIntent.getBroadcast(
                     view.getContext(),
-                    0,
+                    MapService.REQUEST_CODE,
                     intent,
-                    PendingIntent.FLAG_ONE_SHOT));
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                    )
+            );
+            stopService(intent);
             view.setBackgroundColor(Color.RED);
+            Log.d(getClass().getSimpleName(), "Canceled repeating action");
         }
-
+        Log.d(getClass().getSimpleName(), "Button pressed");
         editor.putBoolean(MapService.STATUS_SHARED_KEY, !currentStatus);
+        editor.apply();
     }
 }
