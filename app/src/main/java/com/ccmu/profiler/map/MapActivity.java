@@ -49,13 +49,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         setContentView(R.layout.activity_map);
 
-        Log.d("OnCreate MapActivity", "initializing supportMapFragment");
-        SupportMapFragment supportMapFragment = ((SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_fragment));
-        if (supportMapFragment != null) {
-            supportMapFragment.getMapAsync(this);
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+        else {
+            Log.d("OnCreate MapActivity", "initializing supportMapFragment");
+            SupportMapFragment supportMapFragment = ((SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map_fragment));
+            if (supportMapFragment != null) {
+                supportMapFragment.getMapAsync(this);
+            }
+            Log.d("SupportMapFragment STATUS", (supportMapFragment == null) ? "null" : "instantiated");
         }
-        Log.d("SupportMapFragment STATUS", (supportMapFragment == null) ? "null" : "instantiated");
 
         setupButton();
 

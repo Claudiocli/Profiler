@@ -1,22 +1,26 @@
 package com.ccmu.profiler.ui.edit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.ccmu.profiler.MainActivity;
 import com.ccmu.profiler.R;
@@ -33,6 +37,7 @@ public class EditUserDataActivity extends Activity {
 
     public static final int REGISTER_USER_REQUEST_CODE = 5;
     private static final int PICK_IMAGE_REQUEST_CODE = 6;
+    private static final int PERMISSION_REQUEST_READ = 7;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,16 +54,16 @@ public class EditUserDataActivity extends Activity {
     }
 
     private void updateEditingFieldsData() {
-        ((TextView) findViewById(R.id.linkedin_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Linkedin_link", "Linkedin"));
-        ((TextView) findViewById(R.id.website_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Website_link", "Website"));
-        ((TextView) findViewById(R.id.google_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Google_link", "Google"));
-        ((TextView) findViewById(R.id.facebook_link_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Facebook_link", "Facebook"));
-        ((TextView) findViewById(R.id.whatsapp_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Whatsapp_link", "Whatsapp"));
-        ((TextView) findViewById(R.id.telegram_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Telegram_link", "Telegram"));
+        ((TextView) findViewById(R.id.linkedin_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Linkedin_link", ""));
+        ((TextView) findViewById(R.id.website_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Website_link", ""));
+        ((TextView) findViewById(R.id.google_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Google_link", ""));
+        ((TextView) findViewById(R.id.facebook_link_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Facebook_link", ""));
+        ((TextView) findViewById(R.id.whatsapp_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Whatsapp_link", ""));
+        ((TextView) findViewById(R.id.telegram_edit_link)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Telegram_link", ""));
 
-        ((EditText) findViewById(R.id.first_name_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("First_name", "First Name"));
-        ((EditText) findViewById(R.id.last_name_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Last_name", "Last name"));
-        ((EditText) findViewById(R.id.bio_and_info_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Bio", "Bio"));
+        ((EditText) findViewById(R.id.first_name_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("First_name", ""));
+        ((EditText) findViewById(R.id.last_name_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Last_name", ""));
+        ((EditText) findViewById(R.id.bio_and_info_edit)).setText(getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Bio", ""));
 
         String uri = getApplicationContext().getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE).getString("Uri_profile_pic", "");
         if (!uri.equals(""))
@@ -135,6 +140,8 @@ public class EditUserDataActivity extends Activity {
             Intent chooserIntent = Intent.createChooser(getIntent, "Select an Image");
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
+            // Request for media permissions
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ);
             startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST_CODE);
         });
 
@@ -203,5 +210,20 @@ public class EditUserDataActivity extends Activity {
             ((ImageView) findViewById(R.id.image_edit)).setImageURI(data.getData());
             Log.d("EditUserDataActivity", "CHANGED IMAGE ON EDIT MENU");
         }
+    }
+
+    public void continueToHomePage(View view) {
+        EditText firstName = findViewById(R.id.first_name_edit);
+        EditText lastName = findViewById(R.id.last_name_edit);
+
+        if (firstName.getText().toString().equals(""))
+            firstName.setHintTextColor(Color.RED);
+        if (lastName.getText().toString().equals(""))
+            lastName.setHintTextColor(Color.RED);
+
+        if (firstName.getText().toString().equals("") || lastName.getText().toString().equals(""))
+            return;
+
+        finish();
     }
 }

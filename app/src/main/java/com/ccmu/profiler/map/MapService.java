@@ -93,7 +93,7 @@ public class MapService extends Service implements LocationListener {
         SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        LatLng latLng = new LatLng(Float.parseFloat(sp.getString(MapActivity.WORK_LATITUDE_KEY, null)), Float.parseFloat(sp.getString(MapActivity.WORK_LONGITUDE_KEY, null)));
+        LatLng latLng = new LatLng(Float.parseFloat(sp.getString(MapActivity.WORK_LATITUDE_KEY, "0.0")), Float.parseFloat(sp.getString(MapActivity.WORK_LONGITUDE_KEY, "0.0")));
         Location workLocation = new Location("");
 
         workLocation.setLatitude(latLng.latitude);

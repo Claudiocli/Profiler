@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +40,7 @@ public class ExchangeFragment extends Fragment {
             Intent i = new Intent(getContext(), NFCActivity.class);
             i.putExtra(NFCActivity.MODE, NFCActivity.NFC_READ_MODE);
             startActivity(i);
+            Toast.makeText(root.getContext(), R.string.nfc_contact_received, Toast.LENGTH_LONG);
         });
         root.findViewById(R.id.nfc_send_my_contact).setOnClickListener(v -> {
             if (NFCActivity.isNFCDisabled())
@@ -46,6 +48,7 @@ public class ExchangeFragment extends Fragment {
             Intent i = new Intent(getContext(), NFCActivity.class);
             i.putExtra(NFCActivity.MODE, NFCActivity.NFC_WRITE_MODE);
             startActivity(i);
+            Toast.makeText(root.getContext(), R.string.nfc_contact_sent, Toast.LENGTH_LONG);
         });
     }
 

@@ -46,6 +46,12 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        updateUserData(requireView());
+        super.onResume();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);

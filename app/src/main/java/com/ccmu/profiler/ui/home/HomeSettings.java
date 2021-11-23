@@ -1,5 +1,6 @@
 package com.ccmu.profiler.ui.home;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.ccmu.profiler.MainActivity;
 import com.ccmu.profiler.R;
+import com.ccmu.profiler.map.MapActivity;
 import com.ccmu.profiler.map.MapService;
 
 import java.util.Calendar;
@@ -45,6 +48,8 @@ public class HomeSettings extends Activity {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     public void changeStatusMapService(View view) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, MapActivity.LOCATION_REQUEST_CODE);
+
         SharedPreferences sp = getSharedPreferences(MainActivity.SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 

@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.core.view.GestureDetectorCompat;
 
 import com.ccmu.profiler.BuildConfig;
+import com.ccmu.profiler.R;
 import com.ccmu.profiler.ui.contacts.ContactModel;
 
 import java.util.regex.Pattern;
@@ -60,7 +62,9 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                 if (BuildConfig.DEBUG && !(((Pattern.compile(" *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*")).matcher(dialNumber)).matches())) {
                     Log.d("OnSwipeTouchListener DEBUG", dialNumber.toString());
                     Log.d("OnSwipeTouchListener DEBUG - REGEX", "Regex result is: " + (((Pattern.compile(" *\\(*\\+*\\d+\\)* \\d+ *-* *\\d+ *\\d*")).matcher(dialNumber)).matches()));
-                    throw new AssertionError("Assertion failed");
+                    Toast.makeText(l.getContext(), R.string.number_bad_formatted, Toast.LENGTH_LONG).show();
+                    return;
+                    //throw new AssertionError("Assertion failed");
                 }
 
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + dialNumber));

@@ -1,6 +1,8 @@
 package com.ccmu.profiler;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +17,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.ccmu.profiler.ui.edit.EditUserDataActivity;
 import com.ccmu.profiler.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SHARED_PROPERTY_KEY = "SP";
@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean doesUserDataExists() {
-        return new File(getFilesDir().getPath() + USER_DATA_FILE_NAME).exists();
+        SharedPreferences sp = getSharedPreferences(SHARED_PROPERTY_KEY, Context.MODE_PRIVATE);
+        return (!sp.getString("First_name", "").equals("") && !sp.getString("Last_name", "").equals(""));
     }
 
     private void registerUser() {
